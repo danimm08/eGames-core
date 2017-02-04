@@ -8,9 +8,11 @@ import javax.persistence.*;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BaseEntity {
 
-    public BaseEntity(){
+    public BaseEntity() {
+
         super();
     }
 
@@ -18,21 +20,21 @@ public abstract class BaseEntity {
     private long version;
 
     @Id
-    @GeneratedValue
-    public long getId(){
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    public long getId() {
         return id;
     }
 
-    public void setId(long id){
+    public void setId(long id) {
         this.id = id;
     }
 
     @Version
-    public long getVersion(){
+    public long getVersion() {
         return version;
     }
 
-    public void setVersion(long version){
+    public void setVersion(long version) {
         this.version = version;
     }
 
