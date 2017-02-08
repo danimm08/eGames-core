@@ -1,38 +1,43 @@
 package model;
 
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.Assert;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Collection;
-
-
-/**
- * Created by daniel on 4/02/17.
- */
-
+import java.util.Set;
 
 @Entity
-@Access(AccessType.PROPERTY)
-public class UserAccount extends BaseEntity implements UserDetails {
+public class UserAccount {
 
+    @Id
+    @Column(updatable = false, nullable = false)
+    @Size(min = 0, max = 50)
     private String username;
+
+    @Size(min = 0, max = 500)
     private String password;
-    private Collection<Authority> authorities;
 
-    public UserAccount() {
-        super();
+    @Email
+    @Size(min = 0, max = 50)
+    private String email;
 
-        this.authorities = new ArrayList<Authority>();
-    }
+//    private boolean activated;
 
-    @Size(min = 5, max = 32)
-    @Column(unique = true)
-    @Override
+//    @Size(min = 0, max = 100)
+//    @Column(name = "activationkey")
+//    private String activationKey;
+//
+//    @Size(min = 0, max = 100)
+//    @Column(name = "resetpasswordkey")
+//    private String resetPasswordKey;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = @JoinColumn(name = "username"),
+            inverseJoinColumns = @JoinColumn(name = "authority"))
+    private Set<Authority> authorities;
+
     public String getUsername() {
         return username;
     }
@@ -41,8 +46,6 @@ public class UserAccount extends BaseEntity implements UserDetails {
         this.username = username;
     }
 
-    @Size(min = 5, max = 32)
-    @Override
     public String getPassword() {
         return password;
     }
@@ -51,55 +54,73 @@ public class UserAccount extends BaseEntity implements UserDetails {
         this.password = password;
     }
 
-    @NotEmpty
-    @Valid
-    @ElementCollection
-    @Override
-    public Collection<Authority> getAuthorities() {
-        // WARNING: Should return an unmodifiable copy, but it's not possible with hibernate!
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+//
+//    public boolean isActivated() {
+//        return activated;
+//    }
+//
+//    public void setActivated(boolean activated) {
+//        this.activated = activated;
+//    }
+
+//    public String getActivationKey() {
+//        return activationKey;
+//    }
+//
+//    public void setActivationKey(String activationKey) {
+//        this.activationKey = activationKey;
+//    }
+//
+//    public String getResetPasswordKey() {
+//        return resetPasswordKey;
+//    }
+//
+//    public void setResetPasswordKey(String resetPasswordKey) {
+//        this.resetPasswordKey = resetPasswordKey;
+//    }
+
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Collection<Authority> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
 
-    public void addAuthority(Authority authority) {
-        Assert.notNull(authority);
-        Assert.isTrue(!authorities.contains(authority));
-
-        authorities.add(authority);
-    }
-
-    public void removeAuthority(Authority authority) {
-        Assert.notNull(authority);
-        Assert.isTrue(authorities.contains(authority));
-
-        authorities.remove(authority);
-    }
-
-    @Transient
     @Override
-    public boolean isAccountNonExpired() {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserAccount userAccount = (UserAccount) o;
+
+        if (!username.equals(userAccount.username)) return false;
+
         return true;
     }
 
-    @Transient
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public int hashCode() {
+        return username.hashCode();
     }
 
-    @Transient
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public String toString() {
+        return "UserAccount{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+//                ", activated='" + activated + '\'' +
+//                ", activationKey='" + activationKey + '\'' +
+//                ", resetPasswordKey='" + resetPasswordKey + '\'' +
+                ", authorities=" + authorities +
+                '}';
     }
-
-    @Transient
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
 }

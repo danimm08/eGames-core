@@ -1,78 +1,48 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import java.util.ArrayList;
-import java.util.Collection;
+@Entity
+public class Authority {
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Embeddable;
-import javax.validation.constraints.Pattern;
+    @Id
+    @NotNull
+    @Size(min = 0, max = 50)
+    private String name;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.security.core.GrantedAuthority;
-
-/**
- * Created by daniel on 4/02/17.
- */
-
-@Embeddable
-@Access(AccessType.PROPERTY)
-public class Authority implements GrantedAuthority {
-
-    public Authority() {
-        super();
+    public String getName() {
+        return name;
     }
 
-    public static final String USER = "USER";
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    private String authority;
-
-    @NotBlank
-    @Pattern(regexp = "^" + USER + "$")
     @Override
-    public String getAuthority() {
-        return authority;
-    }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
+        Authority authority = (Authority) o;
 
-    public static Collection<Authority> listAuthorities() {
-        Collection<Authority> result;
-        Authority authority;
+        if (!name.equals(authority.name)) return false;
 
-        result = new ArrayList<Authority>();
-
-        authority = new Authority();
-        authority.setAuthority(USER);
-        result.add(authority);
-
-
-        return result;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return this.getAuthority().hashCode();
+        return name.hashCode();
     }
 
     @Override
-    public boolean equals(Object other) {
-        boolean result;
-
-        if (this == other)
-            result = true;
-        else if (other == null)
-            result = false;
-        else if (!this.getClass().isInstance(other))
-            result = false;
-        else
-            result = (this.getAuthority().equals(((Authority) other)
-                    .getAuthority()));
-
-        return result;
+    public String toString() {
+        return "Authority{" +
+                "name='" + name + '\'' +
+                '}';
     }
 
 }
