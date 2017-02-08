@@ -13,9 +13,9 @@ public class SecureController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public String sayHello(Principal principal) {
+    public String sayHello() {
 
-        return "Secure Hello!" + principal.getName();
+        return "Secure Hello!";
     }
 
 }
