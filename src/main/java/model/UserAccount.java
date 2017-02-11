@@ -1,43 +1,33 @@
 package model;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
-public class UserAccount {
+@Access(AccessType.PROPERTY)
+public class UserAccount extends BaseEntity {
 
-    @Id
-    @Column(updatable = false, nullable = false)
-    @Size(min = 0, max = 50)
+
     private String username;
 
-    @Size(min = 0, max = 500)
+
     private String password;
 
-    @Email
-    @Size(min = 0, max = 50)
+
     private String email;
 
-//    private boolean activated;
 
-//    @Size(min = 0, max = 100)
-//    @Column(name = "activationkey")
-//    private String activationKey;
-//
-//    @Size(min = 0, max = 100)
-//    @Column(name = "resetpasswordkey")
-//    private String resetPasswordKey;
-
-    @ManyToMany
-    @JoinTable(
-            name = "user_authority",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "authority"))
     private Set<Authority> authorities;
 
+
+    @Size(min = 0, max = 50)
+    @NotBlank
+    @NotNull
     public String getUsername() {
         return username;
     }
@@ -46,6 +36,7 @@ public class UserAccount {
         this.username = username;
     }
 
+    @Size(min = 0, max = 500)
     public String getPassword() {
         return password;
     }
@@ -54,6 +45,8 @@ public class UserAccount {
         this.password = password;
     }
 
+    @Email
+    @Size(min = 0, max = 50)
     public String getEmail() {
         return email;
     }
@@ -61,31 +54,12 @@ public class UserAccount {
     public void setEmail(String email) {
         this.email = email;
     }
-//
-//    public boolean isActivated() {
-//        return activated;
-//    }
-//
-//    public void setActivated(boolean activated) {
-//        this.activated = activated;
-//    }
 
-//    public String getActivationKey() {
-//        return activationKey;
-//    }
-//
-//    public void setActivationKey(String activationKey) {
-//        this.activationKey = activationKey;
-//    }
-//
-//    public String getResetPasswordKey() {
-//        return resetPasswordKey;
-//    }
-//
-//    public void setResetPasswordKey(String resetPasswordKey) {
-//        this.resetPasswordKey = resetPasswordKey;
-//    }
-
+    @ManyToMany
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = @JoinColumn(name = "user_account"),
+            inverseJoinColumns = @JoinColumn(name = "authority"))
     public Set<Authority> getAuthorities() {
         return authorities;
     }
@@ -94,33 +68,5 @@ public class UserAccount {
         this.authorities = authorities;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        UserAccount userAccount = (UserAccount) o;
-
-        if (!username.equals(userAccount.username)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return username.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "UserAccount{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-//                ", activated='" + activated + '\'' +
-//                ", activationKey='" + activationKey + '\'' +
-//                ", resetPasswordKey='" + resetPasswordKey + '\'' +
-                ", authorities=" + authorities +
-                '}';
-    }
 }

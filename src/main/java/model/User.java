@@ -95,7 +95,8 @@ public class User extends BaseEntity {
     }
 
     @NotNull
-    @ManyToOne(optional = false)
+    @Valid
+    @OneToOne(optional = false)
     public UserAccount getUserAccount() {
         return userAccount;
     }
