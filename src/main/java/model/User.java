@@ -18,7 +18,7 @@ public class User extends BaseEntity {
 
     private String name;
     private String surname;
-    private Integer reputation;
+    private Double reputation;
     private String profilePicture;
     private Address address;
 
@@ -49,11 +49,11 @@ public class User extends BaseEntity {
     }
 
     @Range(min = 0, max = 10)
-    public Integer getReputation() {
+    public Double getReputation() {
         return reputation;
     }
 
-    public void setReputation(Integer reputation) {
+    public void setReputation(Double reputation) {
         this.reputation = reputation;
     }
 

@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -28,6 +29,7 @@ public class UserAccount extends BaseEntity {
     @Size(min = 0, max = 50)
     @NotBlank
     @NotNull
+    @Column(unique = true)
     public String getUsername() {
         return username;
     }
@@ -37,6 +39,7 @@ public class UserAccount extends BaseEntity {
     }
 
     @Size(min = 0, max = 500)
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -60,6 +63,7 @@ public class UserAccount extends BaseEntity {
             name = "user_authority",
             joinColumns = @JoinColumn(name = "user_account"),
             inverseJoinColumns = @JoinColumn(name = "authority"))
+    @JsonIgnore
     public Set<Authority> getAuthorities() {
         return authorities;
     }

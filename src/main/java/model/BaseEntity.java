@@ -6,9 +6,8 @@ import javax.persistence.*;
  * Created by daniel on 2/02/17.
  */
 
-@Entity
+@MappedSuperclass
 @Access(AccessType.PROPERTY)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BaseEntity {
 
     public BaseEntity() {
@@ -16,25 +15,25 @@ public abstract class BaseEntity {
         super();
     }
 
-    private long id;
-    private long version;
+    private int id;
+    private int version;
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     @Version
-    public long getVersion() {
+    public int getVersion() {
         return version;
     }
 
-    public void setVersion(long version) {
+    public void setVersion(int version) {
         this.version = version;
     }
 
