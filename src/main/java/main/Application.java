@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 @SpringBootApplication
 @EntityScan(basePackages = {"model"})
-@ComponentScan(basePackages = {"security","controllers"})
+@ComponentScan(basePackages = {"security","controllers","servicies","forms"})
 @EnableJpaRepositories(basePackages = {"repositories"})
 public class Application {
 
