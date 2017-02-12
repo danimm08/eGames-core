@@ -24,9 +24,6 @@ import java.util.Set;
 @Component
 public class RegistrationForm {
 
-    @Autowired
-    private AuthorityRepository authorityRepository;
-
     private String name;
     private String surname;
     private Address address;
