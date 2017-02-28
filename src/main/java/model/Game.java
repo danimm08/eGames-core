@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -101,7 +102,7 @@ public class Game extends BaseEntity {
     }
 
     @NotNull
-    @ManyToMany
+    @ManyToMany //fetch = FetchType.EAGER
     public Collection<Genre> getGenres() {
         return genres;
     }
@@ -122,6 +123,7 @@ public class Game extends BaseEntity {
 
     @NotNull
     @ManyToMany
+    @JsonIgnore
     public Collection<Keyword> getKeywords() {
         return keywords;
     }

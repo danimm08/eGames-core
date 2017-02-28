@@ -59,7 +59,8 @@ public class OAuth2Configuration {
                     .and()
                     .authorizeRequests()
                     .antMatchers("/hello/").permitAll()
-                    .antMatchers("/secure/**").authenticated();
+                    .antMatchers("/secure/**").authenticated()
+                    .antMatchers("/game/**").authenticated();
 
 
         }
