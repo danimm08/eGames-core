@@ -3,8 +3,8 @@
 -- INSERT INTO user_account (id,version,username,email, password) VALUES (3,0,'dani', 'dani@abc.com', '4ec7a04102b1663ce90e43dde8f39485680f4304417566191e9225e3e8fcfc52c4d7b7dcbe3823ef');
 
 
-INSERT INTO authority (id,version,name) VALUES (1,0,'ROLE_USER');
-INSERT INTO authority (id,version,name) VALUES (2,0,'ROLE_ADMIN');
+INSERT INTO authority (id,version,authority) VALUES (1,0,'ROLE_USER');
+INSERT INTO authority (id,version,authority) VALUES (2,0,'ROLE_ADMIN');
 
 -- INSERT INTO user_authority (user_account,authority) VALUES (3, 'ROLE_USER');
 -- INSERT INTO user_authority (user_account,authority) VALUES (2, 'ROLE_USER');

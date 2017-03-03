@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -51,6 +52,7 @@ public class Game extends BaseEntity {
         this.coverUrl = coverUrl;
     }
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm a z")
     public Date getFirstReleaseDate() {
         return firstReleaseDate;
     }
@@ -131,4 +133,5 @@ public class Game extends BaseEntity {
     public void setKeywords(Collection<Keyword> keywords) {
         this.keywords = keywords;
     }
+
 }

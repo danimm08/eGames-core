@@ -3,6 +3,8 @@ package model;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by daniel on 4/02/17.
@@ -16,8 +18,13 @@ public class PersonalGame extends BaseEntity {
     private Type type;
     private Integer numberOfViews;
 
+
     private Exchange exchangeUser1;
     private Exchange exchangeUser2;
+
+    private Game game;
+    private User user;
+    private List<Image> images;
 
     public PersonalGame() {
         super();
@@ -65,5 +72,37 @@ public class PersonalGame extends BaseEntity {
 
     public void setExchangeUser2(Exchange exchangeUser2) {
         this.exchangeUser2 = exchangeUser2;
+    }
+
+
+    @ManyToOne(optional = false)
+    @NotNull
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    @ManyToOne(optional = false)
+    @NotNull
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    //Auxiliar relationship
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "personalGame")
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

@@ -37,7 +37,7 @@ public class UserAccountService {
     public UserAccount toUserAccount(RegistrationForm registrationForm) {
         UserAccount ua = new UserAccount();
         Set<Authority> authoritySet = new HashSet<Authority>();
-        authoritySet.add(authorityRepository.findByName("ROLE_USER"));
+        authoritySet.add(authorityRepository.findByAuthority("ROLE_USER"));
 
         ua.setAuthorities(authoritySet);
         ua.setEmail(registrationForm.getEmail());

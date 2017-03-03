@@ -2,11 +2,11 @@ package security;
 
 import model.Authority;
 import model.UserAccount;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         String lowercaseLogin = login.toLowerCase();
 
         UserAccount userFromDatabase;
-            userFromDatabase = userAccountRepository.findByUsername(lowercaseLogin);
+        userFromDatabase = userAccountRepository.findByUsername(lowercaseLogin);
 
 
         if (userFromDatabase == null)
@@ -39,12 +39,17 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Authority authority : userFromDatabase.getAuthorities()) {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority.getName());
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority.getAuthority());
             grantedAuthorities.add(grantedAuthority);
         }
 
         return new org.springframework.security.core.userdetails.User(userFromDatabase.getUsername(), userFromDatabase.getPassword(), grantedAuthorities);
 
+    }
+
+    public static UserDetails getPrincipal() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (UserDetails) auth.getPrincipal();
     }
 
 }
