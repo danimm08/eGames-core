@@ -65,6 +65,7 @@ public class GameDetailsForm {
         this.version = version;
     }
 
+
     public String getTitle() {
         return title;
     }
