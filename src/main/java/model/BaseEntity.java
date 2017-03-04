@@ -1,5 +1,8 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import views.View;
+
 import javax.persistence.*;
 
 /**
@@ -20,6 +23,7 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
+    @JsonView(View.Base.class)
     public int getId() {
         return id;
     }
@@ -29,6 +33,7 @@ public abstract class BaseEntity {
     }
 
     @Version
+    @JsonView(View.Base.class)
     public int getVersion() {
         return version;
     }

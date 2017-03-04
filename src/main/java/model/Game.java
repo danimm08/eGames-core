@@ -2,7 +2,9 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotBlank;
+import views.View;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -36,6 +38,7 @@ public class Game extends BaseEntity {
     }
 
     @NotBlank
+    @JsonView(View.ListPersonalGame.class)
     public String getTitle() {
         return title;
     }
@@ -44,6 +47,7 @@ public class Game extends BaseEntity {
         this.title = title;
     }
 
+    @JsonView(View.ListPersonalGame.class)
     public String getCoverUrl() {
         return coverUrl;
     }
@@ -95,6 +99,7 @@ public class Game extends BaseEntity {
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonView(View.ListPersonalGame.class)
     public Platform getPlatform() {
         return platform;
     }

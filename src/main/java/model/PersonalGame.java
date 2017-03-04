@@ -1,6 +1,8 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotBlank;
+import views.View;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ public class PersonalGame extends BaseEntity {
     }
 
     @NotBlank
+    @JsonView(View.ListPersonalGame.class)
     public String getDescription() {
         return description;
     }
@@ -39,6 +42,7 @@ public class PersonalGame extends BaseEntity {
         this.description = description;
     }
 
+    @JsonView(View.ListPersonalGame.class)
     @Enumerated(EnumType.STRING)
     public Type getType() {
         return type;
@@ -48,6 +52,7 @@ public class PersonalGame extends BaseEntity {
         this.type = type;
     }
 
+    @JsonView(View.ListPersonalGame.class)
     public Integer getNumberOfViews() {
         return numberOfViews;
     }
@@ -77,6 +82,7 @@ public class PersonalGame extends BaseEntity {
 
     @ManyToOne(optional = false)
     @NotNull
+    @JsonView(View.ListPersonalGame.class)
     public Game getGame() {
         return game;
     }
@@ -87,6 +93,7 @@ public class PersonalGame extends BaseEntity {
 
     @ManyToOne(optional = false)
     @NotNull
+    @JsonView(View.DetailsOfPersonalGame.class)
     public User getUser() {
         return user;
     }
@@ -98,6 +105,7 @@ public class PersonalGame extends BaseEntity {
     //Auxiliar relationship
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "personalGame")
+    @JsonView(View.ListPersonalGame.class)
     public List<Image> getImages() {
         return images;
     }

@@ -19,6 +19,7 @@ public class DetailsGameController {
     @Autowired
     private GameService gameService;
 
+
     @RequestMapping(value = "/details", method = RequestMethod.GET)
     public ResponseEntity<GameDetailsForm> getGameDetails(@RequestParam(required = true) String gameId, @RequestParam(required = false, defaultValue = "") String orderBy) {
 

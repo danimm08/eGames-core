@@ -1,7 +1,9 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import views.View;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -49,6 +51,7 @@ public class User extends BaseEntity {
     }
 
     @Range(min = 0, max = 10)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public Double getReputation() {
         return reputation;
     }
@@ -97,6 +100,7 @@ public class User extends BaseEntity {
     @NotNull
     @Valid
     @OneToOne(optional = false)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public UserAccount getUserAccount() {
         return userAccount;
     }

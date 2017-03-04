@@ -1,9 +1,11 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.userdetails.UserDetails;
+import views.View;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class UserAccount extends BaseEntity implements UserDetails{
+public class UserAccount extends BaseEntity implements UserDetails {
 
 
     private String username;
@@ -36,45 +38,11 @@ public class UserAccount extends BaseEntity implements UserDetails{
     @NotBlank
     @NotNull
     @Column(unique = true)
+    @JsonView(View.ListPersonalGame.class)
     public String getUsername() {
         return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        isAccountNonLocked = accountNonLocked;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        isCredentialsNonExpired = credentialsNonExpired;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
-    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -114,5 +82,45 @@ public class UserAccount extends BaseEntity implements UserDetails{
         this.authorities = authorities;
     }
 
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return false;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        isCredentialsNonExpired = credentialsNonExpired;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
 
 }
