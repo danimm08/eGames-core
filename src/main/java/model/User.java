@@ -1,8 +1,12 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import serializers.CustomFollowersFolloweesSerializer;
 import views.View;
 
 import javax.persistence.*;
@@ -16,6 +20,7 @@ import java.util.Collection;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User extends BaseEntity {
 
     private String name;
@@ -23,6 +28,7 @@ public class User extends BaseEntity {
     private Double reputation;
     private String profilePicture;
     private Address address;
+    private Integer nExchanges;
 
     private Collection<User> followers;
     private Collection<User> followees;
@@ -79,7 +85,18 @@ public class User extends BaseEntity {
         this.address = address;
     }
 
+    @NotNull
+    @Range(min=0)
+    public Integer getnExchanges() {
+        return nExchanges;
+    }
+
+    public void setnExchanges(Integer nExchanges) {
+        this.nExchanges = nExchanges;
+    }
+
     @ManyToMany
+    @JsonSerialize(using = CustomFollowersFolloweesSerializer.class)
     public Collection<User> getFollowers() {
         return followers;
     }
@@ -89,6 +106,7 @@ public class User extends BaseEntity {
     }
 
     @ManyToMany
+    @JsonSerialize(using = CustomFollowersFolloweesSerializer.class)
     public Collection<User> getFollowees() {
         return followees;
     }

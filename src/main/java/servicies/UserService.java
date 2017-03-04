@@ -3,9 +3,11 @@ package servicies;
 import forms.RegistrationForm;
 import model.User;
 import model.UserAccount;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import repositories.UserRepository;
 
 /**
@@ -25,6 +27,14 @@ public class UserService {
         super();
     }
 
+    public User findById(int id){
+        User user;
+        user = userRepository.findOne(id);
+        Assert.notNull(user);
+        Hibernate.initialize(user.getFollowees());
+        Hibernate.initialize(user.getFollowers());
+        return user;
+    }
 
     public User save(RegistrationForm registrationForm) {
         UserAccount ua = userAccountService.save(userAccountService.toUserAccount(registrationForm));
