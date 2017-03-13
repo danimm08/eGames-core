@@ -1,4 +1,4 @@
-package servicies;
+package services;
 
 import forms.RegistrationForm;
 import model.User;
@@ -50,7 +50,21 @@ public class UserService {
         u.setName(registrationForm.getName());
         u.setSurname(registrationForm.getSurname());
         u.setReputation(0.0);
+        u.setnExchanges(0);
         return u;
     }
 
+    public User findByUsername(String username){
+        User user;
+        user = userRepository.findByUsername(username);
+        Assert.notNull(user);
+        return user;
+    }
+
+    public User findByPersonalGameId(int personalGameId) {
+        User user;
+        user = userRepository.findByPersonalGameId(personalGameId);
+        Assert.notNull(user);
+        return user;
+    }
 }

@@ -21,8 +21,7 @@ public class PersonalGame extends BaseEntity {
     private Integer numberOfViews;
 
 
-    private Exchange exchangeUser1;
-    private Exchange exchangeUser2;
+    private Exchange exchange;
 
     private Game game;
     private User user;
@@ -62,23 +61,13 @@ public class PersonalGame extends BaseEntity {
     }
 
     @ManyToOne
-    public Exchange getExchangeUser1() {
-        return exchangeUser1;
+    public Exchange getExchange() {
+        return exchange;
     }
 
-    public void setExchangeUser1(Exchange exchangeUser1) {
-        this.exchangeUser1 = exchangeUser1;
+    public void setExchange(Exchange exchange) {
+        this.exchange = exchange;
     }
-
-    @ManyToOne
-    public Exchange getExchangeUser2() {
-        return exchangeUser2;
-    }
-
-    public void setExchangeUser2(Exchange exchangeUser2) {
-        this.exchangeUser2 = exchangeUser2;
-    }
-
 
     @ManyToOne(optional = false)
     @NotNull

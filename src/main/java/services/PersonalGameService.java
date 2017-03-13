@@ -1,4 +1,4 @@
-package servicies;
+package services;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import model.PersonalGame;
@@ -59,6 +59,7 @@ public class PersonalGameService {
     }
 
     @JsonView(View.ListPersonalGame.class)
+    //TODO: This annotation doesn't have sense, check if the annotation can be removed
     public Collection<PersonalGame> listPersonalGamesByUser(int userId) {
         Assert.notNull(userId);
         List<PersonalGame> personalGames;
@@ -73,5 +74,17 @@ public class PersonalGameService {
         Assert.notNull(personalGames);
 
         return personalGames;
+    }
+
+    public List<PersonalGame> findAllPersonalGameByUser(int id) {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameRepository.findAllPersoalGameByUser(id);
+        Assert.notNull(personalGames);
+        return personalGames;
+    }
+
+    public PersonalGame save(PersonalGame personalGame) {
+        PersonalGame pg = personalGameRepository.save(personalGame);
+        return pg;
     }
 }

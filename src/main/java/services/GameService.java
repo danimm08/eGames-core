@@ -1,4 +1,4 @@
-package servicies;
+package services;
 
 import forms.GameDetailsForm;
 import model.Game;
