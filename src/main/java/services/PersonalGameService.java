@@ -78,7 +78,21 @@ public class PersonalGameService {
 
     public List<PersonalGame> findAllPersonalGameByUser(int id) {
         List<PersonalGame> personalGames;
-        personalGames = personalGameRepository.findAllPersoalGameByUser(id);
+        personalGames = personalGameRepository.findAllPersonalGameByUser(id);
+        Assert.notNull(personalGames);
+        return personalGames;
+    }
+
+    public List<PersonalGame> findAllPersonalGameByExchange(int id) {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameRepository.findAllPersonalGameByExchange(id);
+        Assert.notNull(personalGames);
+        return personalGames;
+    }
+
+    public List<PersonalGame> findAllPersonalGameByUserAndExchange(int exchangeId, int userId) {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameRepository.findAllPersonalGameByUserAndExchange(exchangeId,userId);
         Assert.notNull(personalGames);
         return personalGames;
     }

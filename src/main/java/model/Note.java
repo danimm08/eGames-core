@@ -1,6 +1,8 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotBlank;
+import views.View;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -29,6 +31,7 @@ public class Note extends BaseEntity {
     }
 
     @NotBlank
+    @JsonView(View.DetailsOfPersonalGame.class)
     public String getText() {
         return text;
     }
@@ -39,6 +42,7 @@ public class Note extends BaseEntity {
 
     @NotNull
     @Past
+    @JsonView(View.DetailsOfPersonalGame.class)
     public Date getDate() {
         return date;
     }
@@ -49,6 +53,7 @@ public class Note extends BaseEntity {
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public Exchange getExchange() {
         return exchange;
     }
@@ -59,6 +64,7 @@ public class Note extends BaseEntity {
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public User getUser() {
         return user;
     }

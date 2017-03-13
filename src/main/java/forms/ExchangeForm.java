@@ -17,7 +17,7 @@ public class ExchangeForm {
     private List<PersonalGame> personalGamesUser2;
     private Type type;
     private String wayExchange;
-    private Note note;
+    private List<Note> notes;
 
     public ExchangeForm() {
         super();
@@ -63,11 +63,11 @@ public class ExchangeForm {
     }
 
     @JsonView(View.DetailsOfPersonalGame.class)
-    public Note getNote() {
-        return note;
+    public List<Note> getNotes() {
+        return notes;
     }
 
-    public void setNote(Note note) {
-        this.note = note;
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
     }
 }
