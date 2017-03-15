@@ -67,4 +67,9 @@ public class UserService {
         Assert.notNull(user);
         return user;
     }
+
+    public void update(User principal) {
+        Assert.notNull(principal);
+        userRepository.save(principal);
+    }
 }

@@ -1,6 +1,7 @@
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,12 +18,17 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
-    @RequestMapping(value="user/profile_picture", method = RequestMethod.POST)
-    public String uploadImage(@RequestParam("userId") int userId, @RequestParam("image") MultipartFile image) throws Exception {
+    @RequestMapping(value = "user/profile_picture", method = RequestMethod.POST)
+    public ResponseEntity uploadImage(@RequestParam("image") MultipartFile image) throws Exception {
+        ResponseEntity responseEntity;
 
-        imageService.store(image);
-
-        return "test";
+        try {
+            imageService.saveProfilePicture(image);
+            responseEntity = ResponseEntity.ok().body("The image has been uploaded successfully");
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+        return responseEntity;
     }
 
 }
