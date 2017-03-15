@@ -5,6 +5,7 @@ import model.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import repositories.ExchangeRepository;
 import security.UserDetailsService;
 
@@ -43,8 +44,9 @@ public class ExchangeService {
         System.out.println(username);
         User u1 = userService.findByUsername(username);
         User u2 = userService.findByPersonalGameId(personalGameId);
-        ef.setPersonalGamesUser1(personalGameService.findAllPersonalGameByUser(u1.getId()));
-        ef.setPersonalGamesUser2(personalGameService.findAllPersonalGameByUser(u2.getId()));
+        Assert.isTrue(u1 != u2, "It's not allowed make exchanges with yourself.");
+        ef.setPersonalGamesUser1(personalGameService.findAvailablePersonalGameByUser(u1.getId()));
+        ef.setPersonalGamesUser2(personalGameService.findAvailablePersonalGameByUser(u2.getId()));
         ef.setNotes(new ArrayList<Note>());
         ef.setType(Type.Fijo);
         ef.setWayExchange("");
@@ -55,6 +57,7 @@ public class ExchangeService {
     public Exchange save(ExchangeForm ef) {
 
         User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        Assert.notNull(u, "An error has occurred. Please, make sure you are logged in");
         Hibernate.initialize(u.getFollowees());
         Hibernate.initialize(u.getFollowers());
 
@@ -81,11 +84,15 @@ public class ExchangeService {
             noteService.save(note);
         }
 
+        Assert.isTrue( ef.getPersonalGamesUser2().size()>0, "A game has to be selected to exchange");
+
         ef.getPersonalGamesUser1().forEach(personalGame -> {
+            Assert.isTrue(personalGame.getExchange()==null, "This personal game is not available to exchange it");
             personalGame.setExchange(res);
             personalGameService.save(personalGame);
         });
         ef.getPersonalGamesUser2().forEach(personalGame -> {
+            Assert.isTrue(personalGame.getExchange()==null, "This personal game is not available to exchange it");
             personalGame.setExchange(res);
             personalGameService.save(personalGame);
         });
@@ -97,6 +104,7 @@ public class ExchangeService {
     public boolean acceptOrDecline(int exchangeId, boolean isAccept) {
         boolean res = false;
         Exchange exchange = exchangeRepository.findOne(exchangeId);
+        Assert.notNull(exchange);
         if (isAccept) {
             exchange.setStatus(true);
         } else {
@@ -119,6 +127,7 @@ public class ExchangeService {
 
         Exchange exchange = exchangeRepository.findOne(exchangeId);
         User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        Assert.notNull(exchange);
         Hibernate.initialize(u.getFollowees());
         Hibernate.initialize(u.getFollowers());
 
@@ -130,6 +139,9 @@ public class ExchangeService {
         exchange.setNumberOfAttemps(exchange.getNumberOfAttemps() + 1);
 
         Exchange res = exchangeRepository.save(exchange);
+
+        Assert.isTrue( ef.getPersonalGamesUser2().size()>0, "A game has to be selected to exchange");
+        Assert.isTrue( ef.getPersonalGamesUser1().size()>0, "A game has to be selected to exchange");
 
         if (ef.getNotes().size() > 0) {
             Note note = ef.getNotes().get(ef.getNotes().size() - 1);
@@ -147,11 +159,13 @@ public class ExchangeService {
 
 
         ef.getPersonalGamesUser1().forEach(personalGame -> {
+            Assert.isTrue(personalGame.getExchange()==null, "This personal game is not available to exchange it");
             personalGame.setExchange(res);
             personalGameService.save(personalGame);
         });
 
         ef.getPersonalGamesUser2().forEach(personalGame -> {
+            Assert.isTrue(personalGame.getExchange()==null, "This personal game is not available to exchange it");
             personalGame.setExchange(res);
             personalGameService.save(personalGame);
         });
@@ -163,6 +177,7 @@ public class ExchangeService {
     public ExchangeForm getExchangeForm(int exchangeId) {
 
         Exchange exchange = exchangeRepository.findOne(exchangeId);
+        Assert.notNull(exchange);
         User u1 = exchange.getUser();
         PersonalGame auxPersonalGame = personalGameService.findAllPersonalGameByExchange(exchangeId)
                 .stream().filter(personalGame -> personalGame.getExchange().getId() == exchangeId && personalGame.getUser().getId() != u1.getId()).findAny().get();

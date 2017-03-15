@@ -24,8 +24,8 @@ public interface PersonalGameRepository extends JpaRepository<PersonalGame, Inte
     @Query("select pg from PersonalGame pg where pg.user.id = ?1")
     List<PersonalGame> findByUserId(int userId);
 
-    @Query("select pg from PersonalGame pg where pg.user.id = ?1")
-    List<PersonalGame> findAllPersonalGameByUser(int id);
+    @Query("select pg from PersonalGame pg where pg.user.id = ?1 and pg.exchange is null")
+    List<PersonalGame> findAvailablePersonalGameByUser(int id);
 
     @Query("select pg from PersonalGame pg where pg.exchange.id = ?1")
     List<PersonalGame> findAllPersonalGameByExchange(int id);
