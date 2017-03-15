@@ -51,6 +51,20 @@
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--These dependencies are for some tests. They should be eliminated in the future.-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.0.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <properties>
