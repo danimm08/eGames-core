@@ -1,12 +1,16 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotBlank;
+import views.View;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import java.util.Date;
 
 /**
  * Created by daniel on 4/02/17.
@@ -17,6 +21,7 @@ import javax.validation.constraints.NotNull;
 public class Note extends BaseEntity {
 
     private String text;
+    private Date date;
 
     private Exchange exchange;
     private User user;
@@ -26,6 +31,7 @@ public class Note extends BaseEntity {
     }
 
     @NotBlank
+    @JsonView(View.DetailsOfPersonalGame.class)
     public String getText() {
         return text;
     }
@@ -35,7 +41,19 @@ public class Note extends BaseEntity {
     }
 
     @NotNull
+    @Past
+    @JsonView(View.DetailsOfPersonalGame.class)
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @NotNull
     @ManyToOne(optional = false)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public Exchange getExchange() {
         return exchange;
     }
@@ -46,6 +64,7 @@ public class Note extends BaseEntity {
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public User getUser() {
         return user;
     }
@@ -53,4 +72,6 @@ public class Note extends BaseEntity {
     public void setUser(User user) {
         this.user = user;
     }
+
+
 }

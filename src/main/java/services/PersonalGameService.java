@@ -1,12 +1,10 @@
-package servicies;
+package services;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import model.PersonalGame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import repositories.PersonalGameRepository;
-import views.View;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -58,20 +56,39 @@ public class PersonalGameService {
         return personalGame;
     }
 
-    @JsonView(View.ListPersonalGame.class)
+
     public Collection<PersonalGame> listPersonalGamesByUser(int userId) {
         Assert.notNull(userId);
         List<PersonalGame> personalGames;
         personalGames = personalGameRepository.findByUserId(userId);
-//        personalGames.forEach(personalGame -> {
-//            personalGame.getUser().setFollowees(new ArrayList<>());
-//            personalGame.getUser().setFollowers(new ArrayList<>());
-//            personalGame.getGame().setGenres(new ArrayList<>());
-//            personalGame.getGame().setGameModes(new ArrayList<>());
-//
-//        });
         Assert.notNull(personalGames);
 
         return personalGames;
+    }
+
+    public List<PersonalGame> findAvailablePersonalGameByUser(int id) {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameRepository.findAvailablePersonalGameByUser(id);
+        Assert.notNull(personalGames);
+        return personalGames;
+    }
+
+    public List<PersonalGame> findAllPersonalGameByExchange(int id) {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameRepository.findAllPersonalGameByExchange(id);
+        Assert.notNull(personalGames);
+        return personalGames;
+    }
+
+    public List<PersonalGame> findAllPersonalGameByUserAndExchange(int exchangeId, int userId) {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameRepository.findAllPersonalGameByUserAndExchange(exchangeId,userId);
+        Assert.notNull(personalGames);
+        return personalGames;
+    }
+
+    public PersonalGame save(PersonalGame personalGame) {
+        PersonalGame pg = personalGameRepository.save(personalGame);
+        return pg;
     }
 }
