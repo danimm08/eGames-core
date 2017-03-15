@@ -95,7 +95,7 @@ public class User extends BaseEntity {
         this.nExchanges = nExchanges;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JsonSerialize(using = CustomFollowersFolloweesSerializer.class)
     public Collection<User> getFollowers() {
         return followers;
@@ -105,7 +105,7 @@ public class User extends BaseEntity {
         this.followers = followers;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JsonSerialize(using = CustomFollowersFolloweesSerializer.class)
     public Collection<User> getFollowees() {
         return followees;

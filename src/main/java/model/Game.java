@@ -109,7 +109,7 @@ public class Game extends BaseEntity {
     }
 
     @NotNull
-    @ManyToMany //fetch = FetchType.EAGER
+    @ManyToMany(fetch = FetchType.EAGER) //fetch = FetchType.EAGER
     public Collection<Genre> getGenres() {
         return genres;
     }
@@ -119,7 +119,7 @@ public class Game extends BaseEntity {
     }
 
     @NotNull
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     public Collection<GameMode> getGameModes() {
         return gameModes;
     }

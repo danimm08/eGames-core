@@ -1,10 +1,12 @@
 package services;
 
 import model.PersonalGame;
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import repositories.PersonalGameRepository;
+import security.UserDetailsService;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -20,6 +22,9 @@ public class PersonalGameService {
 
     @Autowired
     private PersonalGameRepository personalGameRepository;
+
+    @Autowired
+    private UserService userService;
 
     public PersonalGameService() {
         super();
@@ -88,6 +93,9 @@ public class PersonalGameService {
     }
 
     public PersonalGame save(PersonalGame personalGame) {
+        User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        personalGame.setUser(u);
+        personalGame.setNumberOfViews(0);
         PersonalGame pg = personalGameRepository.save(personalGame);
         return pg;
     }

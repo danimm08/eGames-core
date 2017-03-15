@@ -22,7 +22,7 @@ public abstract class BaseEntity {
     private int version;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(View.Base.class)
     public int getId() {
         return id;
