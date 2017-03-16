@@ -5,6 +5,9 @@ import model.User;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,4 +58,38 @@ public class ImageService {
         }
     }
 
+
+    public Path load(String filename) {
+        String rootPath = env.getProperty("es.eGames.images.rootPath");
+        Path rootLocation = Paths.get(rootPath);
+        return rootLocation.resolve(filename);
+    }
+
+    public Resource loadAsResource(String filename) throws Exception {
+        Resource resource;
+        Path file = Paths.get(filename);//load(filename);
+        resource = new UrlResource(file.toUri());
+
+        if (!(resource.exists() || resource.isReadable())) {
+            throw new IllegalArgumentException("The file doesn't exist");
+        }
+
+        return resource;
+    }
+
+    public MediaType getContentType(String filename) {
+        MediaType mediaType;
+        String extension = filename.split("\\.")[1];
+        System.out.println(filename);
+
+        System.out.println(extension);
+        switch (extension){
+            case "jpg": mediaType = MediaType.IMAGE_JPEG; break;
+            case "jpeg": mediaType = MediaType.IMAGE_JPEG; break;
+            case "png": mediaType = MediaType.IMAGE_PNG; break;
+            default: mediaType = null; break;
+        }
+        System.out.println(mediaType);
+        return MediaType.IMAGE_JPEG;
+    }
 }
