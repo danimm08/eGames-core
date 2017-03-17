@@ -1,6 +1,8 @@
 package services;
 
 
+import model.Image;
+import model.PersonalGame;
 import model.User;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
+import repositories.ImageRepository;
 import security.UserDetailsService;
 
 import java.io.File;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Random;
 
 /**
  * Created by daniel on 15/03/17.
@@ -26,16 +30,22 @@ import java.nio.file.Paths;
 public class ImageService {
 
     @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
     private Environment env;
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PersonalGameService personalGameService;
+
     public ImageService() {
         super();
     }
 
-    public void saveProfilePicture(MultipartFile file) throws Exception {
+    public void saveProfilePicture(MultipartFile image) throws Exception {
         try {
             String rootPath = env.getProperty("es.eGames.images.rootPath");
             String username = UserDetailsService.getPrincipal().getUsername();
@@ -48,26 +58,20 @@ public class ImageService {
             directory.mkdirs();
 
             Path rootLocation = Paths.get(fullPath);
-            Files.copy(file.getInputStream(), rootLocation.resolve(file.getOriginalFilename()));
+            Files.copy(image.getInputStream(), rootLocation.resolve(image.getOriginalFilename()));
 
             User principal = userService.findByUsername(username);
-            principal.setProfilePicture(fullPath + "/" + file.getOriginalFilename());
+            principal.setProfilePicture(fullPath + "/" + image.getOriginalFilename());
             userService.update(principal);
         } catch (IOException e) {
-            throw new Exception("Failed to saveProfilePicture file " + file.getOriginalFilename(), e);
+            throw new Exception("Failed to saveProfilePicture file " + image.getOriginalFilename(), e);
         }
     }
 
 
-    public Path load(String filename) {
-        String rootPath = env.getProperty("es.eGames.images.rootPath");
-        Path rootLocation = Paths.get(rootPath);
-        return rootLocation.resolve(filename);
-    }
-
     public Resource loadAsResource(String filename) throws Exception {
         Resource resource;
-        Path file = Paths.get(filename);//load(filename);
+        Path file = Paths.get(filename);
         resource = new UrlResource(file.toUri());
 
         if (!(resource.exists() || resource.isReadable())) {
@@ -80,16 +84,70 @@ public class ImageService {
     public MediaType getContentType(String filename) {
         MediaType mediaType;
         String extension = filename.split("\\.")[1];
-        System.out.println(filename);
 
-        System.out.println(extension);
-        switch (extension){
-            case "jpg": mediaType = MediaType.IMAGE_JPEG; break;
-            case "jpeg": mediaType = MediaType.IMAGE_JPEG; break;
-            case "png": mediaType = MediaType.IMAGE_PNG; break;
-            default: mediaType = null; break;
+        switch (extension) {
+            case "jpg":
+                mediaType = MediaType.IMAGE_JPEG;
+                break;
+            case "jpeg":
+                mediaType = MediaType.IMAGE_JPEG;
+                break;
+            case "png":
+                mediaType = MediaType.IMAGE_PNG;
+                break;
+            default:
+                mediaType = null;
+                break;
         }
-        System.out.println(mediaType);
-        return MediaType.IMAGE_JPEG;
+        return mediaType;
+    }
+
+    public void savePersonalGamePicture(MultipartFile image, String personalGameId) {
+        try {
+            Assert.notNull(personalGameId);
+            PersonalGame personalGame = personalGameService.findById(personalGameId);
+
+            String username = UserDetailsService.getPrincipal().getUsername();
+            Assert.notNull(username, "You must be logged in");
+
+            String rootPath = env.getProperty("es.eGames.images.rootPath");
+            String personalGamePicturePath = "/" + username + env.getProperty("es.eGames.user.personalGamePicturePath") + "/" + personalGame.getGame().getTitle();
+            String fullPath = rootPath + personalGamePicturePath;
+
+            File directory = new File(fullPath);
+            directory.mkdirs();
+
+            String pathImageToSave = fullPath + "/" + image.getOriginalFilename();
+            File imageToSave = new File(pathImageToSave);
+            String filename;
+            if(imageToSave.exists()){
+                String[] splittedFilename = image.getOriginalFilename().split("\\.");
+                Random r = new Random();
+                splittedFilename[0] += r.nextInt();
+
+                filename = String.join(".", splittedFilename);
+            }else{
+                filename = image.getOriginalFilename();
+            }
+            pathImageToSave = fullPath + "/" + filename;
+
+            System.out.println(filename);
+            System.out.println(pathImageToSave);
+
+            Path rootLocation = Paths.get(fullPath);
+            Files.copy(image.getInputStream(), rootLocation.resolve(filename));
+
+            Image pgImage = new Image();
+            pgImage.setPathUrl(pathImageToSave);
+            pgImage.setPersonalGame(personalGame);
+            imageRepository.save(pgImage);
+
+        } catch (IOException e) {
+            try {
+                throw new Exception("Failed to saveProfilePicture file " + image.getOriginalFilename(), e);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 }

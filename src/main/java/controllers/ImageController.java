@@ -18,7 +18,7 @@ public class ImageController {
     private ImageService imageService;
 
     @RequestMapping(value = "user/profile_picture", method = RequestMethod.POST)
-    public ResponseEntity uploadImage(@RequestParam("image") MultipartFile image) throws Exception {
+    public ResponseEntity uploadProfilePicture(@RequestParam("image") MultipartFile image) throws Exception {
         ResponseEntity responseEntity;
 
         try {
@@ -30,14 +30,15 @@ public class ImageController {
         return responseEntity;
     }
 
-    @RequestMapping(value = "/personalgame/images", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity serveFile(@RequestParam String filename) {
+    @RequestMapping(value = "/images/download", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResponseEntity serveFile(@RequestParam String filename) {
         ResponseEntity responseEntity;
         Resource file;
 
         try {
             file = imageService.loadAsResource(filename);
-            System.out.println(imageService.getContentType(filename));
             responseEntity =
                     ResponseEntity
                             .ok()
@@ -46,6 +47,19 @@ public class ImageController {
                             .body(file);
 
         } catch (Exception oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+        return responseEntity;
+    }
+
+    @RequestMapping(value = "personalgame/upload", method = RequestMethod.POST)
+    public ResponseEntity uploadPersonalGamePicture(@RequestParam("image") MultipartFile image, @RequestParam String personalGameId) throws Exception {
+        ResponseEntity responseEntity;
+
+        try {
+            imageService.savePersonalGamePicture(image, personalGameId);
+            responseEntity = ResponseEntity.ok().body("The image has been uploaded successfully");
+        } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }
         return responseEntity;

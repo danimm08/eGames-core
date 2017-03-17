@@ -1,7 +1,9 @@
 package model;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotBlank;
+import views.View;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -25,6 +27,7 @@ public class Image extends BaseEntity {
     }
 
     @NotBlank
+    @JsonView(View.DetailsOfPersonalGame.class)
     public String getPathUrl() {
         return pathUrl;
     }
