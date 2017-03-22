@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.validator.constraints.NotBlank;
 import views.View;
@@ -19,6 +20,7 @@ public class PersonalGame extends BaseEntity {
     private String description;
     private Type type;
     private Integer numberOfViews;
+    private Double distance;
 
 
     private Exchange exchange;
@@ -58,6 +60,18 @@ public class PersonalGame extends BaseEntity {
 
     public void setNumberOfViews(Integer numberOfViews) {
         this.numberOfViews = numberOfViews;
+    }
+
+    @Transient
+//    @JsonProperty
+    @JsonProperty
+    @JsonView(View.ListPersonalGame.class)
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     @ManyToOne

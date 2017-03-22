@@ -27,6 +27,7 @@ public class DetailsGameController {
 
         try {
             GameDetailsForm game = gameService.detailsOfGame(new Integer(gameId), orderBy);
+            System.out.println(orderBy);
             responseEntity = ResponseEntity.ok().body(game);
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
