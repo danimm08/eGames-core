@@ -19,7 +19,6 @@ import java.util.Date;
 public class Qualification extends BaseEntity {
 
     private String text;
-    private Date date;
     private Integer mark;
 
     private Exchange exchange;
@@ -36,16 +35,6 @@ public class Qualification extends BaseEntity {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    @NotNull
-    @Past
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     @Range(min=0, max=10)

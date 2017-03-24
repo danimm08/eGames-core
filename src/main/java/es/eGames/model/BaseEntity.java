@@ -33,6 +33,7 @@ public abstract class BaseEntity {
     }
 
     @Version
+    @Column(columnDefinition = "integer DEFAULT 0")
     @JsonView(View.Base.class)
     public int getVersion() {
         return version;

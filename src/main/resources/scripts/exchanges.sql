@@ -1,0 +1,6 @@
+#Exchanges
+INSERT INTO exchange (creation_date, event_date, last_update_date, number_of_attemps, status, type, way_exchange, user_id) VALUES ("2017-01-05","2017-01-07","2017-01-07",2,TRUE, "Fijo","Intercambio por correo",1);
+INSERT INTO exchange (creation_date, event_date, last_update_date, number_of_attemps, status, type, way_exchange, user_id) VALUES ("2017-01-25",NULL ,"2017-01-25",0,NULL, "Temporal","Quedamos en plaza de armas.",2);
+INSERT INTO exchange (creation_date, event_date, last_update_date, number_of_attemps, status, type, way_exchange, user_id) VALUES ("2017-02-08",NULL,"2017-02-12",4,NULL, "Temporal","Intercambio por correo",4);
+INSERT INTO exchange (creation_date, event_date, last_update_date, number_of_attemps, status, type, way_exchange, user_id) VALUES ("2017-03-05","2017-03-07","2017-03-07",3,FALSE , "Fijo","Intercambio por correo",6);
+INSERT INTO exchange (creation_date, event_date, last_update_date, number_of_attemps, status, type, way_exchange, user_id) VALUES ("2017-02-16","2017-02-16","2017-02-16",1,TRUE, "Fijo","Intercambio por correo",8);

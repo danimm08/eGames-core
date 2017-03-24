@@ -1,0 +1,21 @@
+#Genres
+INSERT IGNORE INTO genre (id, name) VALUES (2, 'Point-and-click');
+INSERT IGNORE INTO genre (id, name) VALUES (4, 'Fighting');
+INSERT IGNORE INTO genre (id, name) VALUES (5, 'Shooter');
+INSERT IGNORE INTO genre (id, name) VALUES (7, 'Music');
+INSERT IGNORE INTO genre (id, name) VALUES (8, 'Platform');
+INSERT IGNORE INTO genre (id, name) VALUES (9, 'Puzzle');
+INSERT IGNORE INTO genre (id, name) VALUES (10, 'Racing');
+INSERT IGNORE INTO genre (id, name) VALUES (11, 'Real Time Strategy (RTS)');
+INSERT IGNORE INTO genre (id, name) VALUES (12, 'Role-playing (RPG)');
+INSERT IGNORE INTO genre (id, name) VALUES (13, 'Simulator');
+INSERT IGNORE INTO genre (id, name) VALUES (14, 'Sport');
+INSERT IGNORE INTO genre (id, name) VALUES (15, 'Strategy');
+INSERT IGNORE INTO genre (id, name) VALUES (16, 'Turn-based strategy (TBS)');
+INSERT IGNORE INTO genre (id, name) VALUES (24, 'Tactical');
+INSERT IGNORE INTO genre (id, name) VALUES (25, 'Hack and slash/Beat ''em up');
+INSERT IGNORE INTO genre (id, name) VALUES (26, 'Quiz/Trivia');
+INSERT IGNORE INTO genre (id, name) VALUES (30, 'Pinball');
+INSERT IGNORE INTO genre (id, name) VALUES (31, 'Adventure');
+INSERT IGNORE INTO genre (id, name) VALUES (32, 'Indie');
+INSERT IGNORE INTO genre (id, name) VALUES (33, 'Arcade');

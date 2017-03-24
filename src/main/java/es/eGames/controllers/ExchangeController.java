@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import es.eGames.services.ExchangeService;
-import es.eGames.utils.HandleValidationErrors;
+import es.eGames.errors.HandleValidationErrors;
 import es.eGames.views.View;
 
 import javax.validation.Valid;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import es.eGames.services.UserService;
-import es.eGames.utils.HandleValidationErrors;
+import es.eGames.errors.HandleValidationErrors;
 
 import javax.validation.Valid;
 
