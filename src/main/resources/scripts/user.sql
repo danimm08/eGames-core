@@ -1,6 +1,6 @@
 #User
-INSERT INTO `user` (city, country, state, street, zip, n_exchanges, name, profile_picture, reputation, surname, user_account_id) VALUES ('Aracena','España','Huelva','Calle 1','21200',0,'User1',NULL,0,'Surname1',1);
-INSERT INTO `user` (city, country, state, street, zip, n_exchanges, name, profile_picture, reputation, surname, user_account_id) VALUES ('Sevilla','España','Sevilla','Calle 2','41012',0,'User2',NULL,0,'Surname2',2);
+INSERT INTO `user` (city, country, state, street, zip, n_exchanges, name, profile_picture, reputation, surname, user_account_id) VALUES ('Aracena','España','Huelva','Calle 1','21200',0,'User1',"username1/profilePictures/nobody_m.original.jpg",0,'Surname1',1);
+INSERT INTO `user` (city, country, state, street, zip, n_exchanges, name, profile_picture, reputation, surname, user_account_id) VALUES ('Sevilla','España','Sevilla','Calle 2','41012',0,'User2',"username2/profilePictures/47476486-profile-pictures.png",0,'Surname2',2);
 INSERT INTO `user` (city, country, state, street, zip, n_exchanges, name, profile_picture, reputation, surname, user_account_id) VALUES ('Barcelona','España','Cataluña','Calle 3','08037',0,'User3',NULL,0,'Surname3',3);
 INSERT INTO `user` (city, country, state, street, zip, n_exchanges, name, profile_picture, reputation, surname, user_account_id) VALUES ('Madrid','España','Madrid','Calle 4','28005',0,'User4',NULL,0,'Surname4',4);
 INSERT INTO `user` (city, country, state, street, zip, n_exchanges, name, profile_picture, reputation, surname, user_account_id) VALUES ('Huelva','España','Huelva','Calle 5','21004',0,'User5',NULL,0,'Surname5',5);

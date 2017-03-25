@@ -70,6 +70,8 @@ public class ImageService {
 
 
     public Resource loadAsResource(String filename) throws Exception {
+        String rootPath = env.getProperty("es.eGames.images.rootPath");
+        filename = rootPath + "/" + filename;
         Resource resource;
         Path file = Paths.get(filename);
         resource = new UrlResource(file.toUri());
