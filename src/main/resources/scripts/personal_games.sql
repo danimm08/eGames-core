@@ -1,6 +1,6 @@
 #Personal games
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Ha salido un nuevo juego de CoD y este ya no lo quiero. Está bien. La carátula contiene todos los papeles.",0,"Fijo", 110, 1,1);
-INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Ya me pasé el modo historia y no tengo PSPlus para poder jugar online, por eso lo quiero cambiar. Es un juegazo.",0,"Fijo", 176, 1,5);
+INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Ya me pasé el modo historia y no tengo suscripción para poder jugar online, por eso lo quiero cambiar. Es un juegazo.",0,"Fijo", 176, 1,5);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo cambio por algún CoD, ya que este juego no me ha terminado de convencer",0,"Fijo", 354, 1,5);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo intercambio momentáneamente, ya que ahora juego más a juegos con modo historia.",0,"Temporal", 583, 2,2);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo intercambio momentáneamente, ya que ahora juego más a juegos con modo historia.",0,"Temporal", 691, 2,NULL);

@@ -8,12 +8,12 @@ import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.DistanceMatrixRow;
 import es.eGames.model.PersonalGame;
 import es.eGames.model.User;
+import es.eGames.repositories.PersonalGameRepository;
+import es.eGames.security.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import es.eGames.repositories.PersonalGameRepository;
-import es.eGames.security.UserDetailsService;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -38,7 +38,7 @@ public class PersonalGameService {
         super();
     }
 
-    public List<PersonalGame> findOrderedPersonalGamesByGameId(int gameId, String orderBy) {
+    public List<PersonalGame> findOrderedPersonalGamesByGameId(int gameId, String orderBy) {//TODO: Añadir formas de ordenar: seguidos primero
         List<PersonalGame> personalGameList;
         Assert.notNull(gameId);
         Assert.notNull(orderBy);
@@ -97,8 +97,8 @@ public class PersonalGameService {
         apiRequest.destinations(destinations);
         apiRequest.origins(origins);
 
-        Assert.notEmpty(destinations,"No se han podido calcular los destinos");
-        Assert.notEmpty(origins,"No se han podido calcular los origenes");
+        Assert.notEmpty(destinations, "No se han podido calcular los destinos");
+        Assert.notEmpty(origins, "No se han podido calcular los origenes");
 
         DistanceMatrix distanceMatrix = null;
         try {
@@ -111,8 +111,8 @@ public class PersonalGameService {
         for (DistanceMatrixRow r : rows) {
             List<DistanceMatrixElement> elements = Arrays.asList(r.elements);
             for (DistanceMatrixElement e : elements) {
-                Assert.isTrue(e.status.equals(DistanceMatrixElementStatus.OK),"Ha habido algún error en el cálculo de las distancias");
-                Double distance = new Double(e.distance.humanReadable.replace(",",".").split(" ")[0]);
+                Assert.isTrue(e.status.equals(DistanceMatrixElementStatus.OK), "Ha habido algún error en el cálculo de las distancias");
+                Double distance = new Double(e.distance.humanReadable.replace(",", ".").split(" ")[0]);
 
                 PersonalGame personalGame = personalGameIntegerMap.get(elements.indexOf(e));
                 personalGame.setDistance(distance);

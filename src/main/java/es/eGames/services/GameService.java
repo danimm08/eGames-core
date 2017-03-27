@@ -3,13 +3,20 @@ package es.eGames.services;
 import es.eGames.forms.GameDetailsForm;
 import es.eGames.model.Game;
 import es.eGames.model.PersonalGame;
+import es.eGames.repositories.GameRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import es.eGames.repositories.GameRepository;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,6 +32,9 @@ public class GameService {
 
     @Autowired
     private PersonalGameService personalGameService;
+
+    @Autowired
+    private Environment env;
 
     public Collection<Game> gameList(String filterBy, String param) throws Exception {
         System.out.println(filterBy);
@@ -64,6 +74,35 @@ public class GameService {
         gameDetailsForm = new GameDetailsForm(game, personalGameList);
 
         return gameDetailsForm;
+    }
+
+    public List<GameDetailsForm> listRecommendedGames(int gameId, HttpHeaders headers) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List> request = restTemplate.exchange(env.getProperty("es.eGames.recommenderSystem.url") + gameId, HttpMethod.GET, new HttpEntity<Object>(headers), List.class);
+        List<Integer> listOfGameIDs;
+        listOfGameIDs = request.getBody();
+        List<GameDetailsForm> res = new ArrayList<>();
+        for (Integer id:listOfGameIDs){
+            Game game = gameRepository.findOne(id);
+            GameDetailsForm gameDetailsForm = new GameDetailsForm(game, null);
+            res.add(gameDetailsForm);
+            System.out.println(res);
+        }
+        return res;
+    }
+
+    public List<GameDetailsForm> listGames(int gameId, String type, HttpHeaders headers) {
+        List<GameDetailsForm> result;
+        if (type.equals("recommend")) {
+            result = listRecommendedGames(gameId, headers);
+        } else if (type.equals("followees")) {
+            result = null;
+        } else if (type.equals("distance")) {
+            result = null;
+        } else {
+            throw new IllegalArgumentException("The arguments you have provied are not correct.");
+        }
+        return result;
     }
 
 }

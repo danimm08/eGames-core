@@ -1,6 +1,8 @@
 package es.eGames.controllers;
 
+import es.eGames.errors.HandleValidationErrors;
 import es.eGames.model.PersonalGame;
+import es.eGames.services.PersonalGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -8,15 +10,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import es.eGames.services.PersonalGameService;
-import es.eGames.errors.HandleValidationErrors;
 
 import javax.validation.Valid;
 
 /**
  * Created by daniel on 15/03/17.
  */
-@RequestMapping(value ="/personalgame")
+@RequestMapping(value = "/personalgame")
 @RestController
 public class PersonalGameController {
 
