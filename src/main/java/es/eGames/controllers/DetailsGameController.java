@@ -38,12 +38,12 @@ public class DetailsGameController {
     }
 
     @RequestMapping(value = "/customList", method = RequestMethod.GET)
-    public ResponseEntity<List> customList(@RequestParam int gameId, @RequestParam(required = true) String type, @RequestHeader HttpHeaders headers) {
+    public ResponseEntity<List> customList(@RequestParam int gameId, @RequestParam(required = true) String type) {
         ResponseEntity responseEntity;
 
         List<GameDetailsForm> personalGameList;
         try {
-            personalGameList = gameService.listGames(gameId, type, headers);
+            personalGameList = gameService.listGames(gameId, type);
             responseEntity = ResponseEntity.ok().body(personalGameList);
         } catch (Exception oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());

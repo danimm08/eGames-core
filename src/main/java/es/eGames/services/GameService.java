@@ -76,9 +76,13 @@ public class GameService {
         return gameDetailsForm;
     }
 
-    public List<GameDetailsForm> listRecommendedGames(int gameId, HttpHeaders headers) {
+    public List<GameDetailsForm> listRecommendedGames(int gameId) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List> request = restTemplate.exchange(env.getProperty("es.eGames.recommenderSystem.url") + gameId, HttpMethod.GET, new HttpEntity<Object>(headers), List.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", env.getProperty("es.eGames.recommenderSystem.password"));
+        HttpEntity httpEntity = new HttpEntity(headers);
+
+        ResponseEntity<List> request = restTemplate.exchange(env.getProperty("es.eGames.recommenderSystem.url") + gameId, HttpMethod.GET, httpEntity, List.class);
         List<Integer> listOfGameIDs;
         listOfGameIDs = request.getBody();
         List<GameDetailsForm> res = new ArrayList<>();
@@ -86,21 +90,20 @@ public class GameService {
             Game game = gameRepository.findOne(id);
             GameDetailsForm gameDetailsForm = new GameDetailsForm(game, null);
             res.add(gameDetailsForm);
-            System.out.println(res);
         }
         return res;
     }
 
-    public List<GameDetailsForm> listGames(int gameId, String type, HttpHeaders headers) {
+    public List<GameDetailsForm> listGames(int gameId, String type) {
         List<GameDetailsForm> result;
         if (type.equals("recommend")) {
-            result = listRecommendedGames(gameId, headers);
+            result = listRecommendedGames(gameId);
         } else if (type.equals("followees")) {
             result = null;
         } else if (type.equals("distance")) {
             result = null;
         } else {
-            throw new IllegalArgumentException("The arguments you have provied are not correct.");
+            throw new IllegalArgumentException("The arguments you have provided are not correct.");
         }
         return result;
     }
