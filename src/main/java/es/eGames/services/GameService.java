@@ -16,9 +16,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by daniel on 28/02/17.
@@ -86,26 +84,56 @@ public class GameService {
         List<Integer> listOfGameIDs;
         listOfGameIDs = request.getBody();
         List<GameDetailsForm> res = new ArrayList<>();
-        for (Integer id:listOfGameIDs){
+        for (Integer id : listOfGameIDs) {
             Game game = gameRepository.findOne(id);
             GameDetailsForm gameDetailsForm = new GameDetailsForm(game, null);
-            res.add(gameDetailsForm);
+            if (!res.contains(gameDetailsForm))
+                res.add(gameDetailsForm);
         }
         return res;
     }
+
+    private List<GameDetailsForm> listCloseGames() {
+        List<PersonalGame> personalGames = personalGameService.findAllExceptOfPrincipal();
+        List<PersonalGame> personalGameIntegerMap = personalGameService.calculateNearestPersonalGames(personalGames);
+        List<PersonalGame> personalGamesWithDistance = personalGameService.calculateDistances(personalGameIntegerMap);
+        personalGamesWithDistance.sort(Comparator.comparing(PersonalGame::getDistance));
+        List<GameDetailsForm> result = new ArrayList<>();
+        for (PersonalGame p : personalGamesWithDistance) {
+            GameDetailsForm gameDetailsForm = new GameDetailsForm(p.getGame(), null);
+            if (!result.contains(gameDetailsForm))
+                result.add(gameDetailsForm);
+        }
+        return result;
+
+    }
+
+    private List<GameDetailsForm> listGamesOfFollowees() {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameService.findPersonalGamesOfFollowees();
+        List<GameDetailsForm> result = new ArrayList<>();
+        for (PersonalGame p : personalGames) {
+            GameDetailsForm gameDetailsForm = new GameDetailsForm(p.getGame(), null);
+            if (!result.contains(gameDetailsForm))
+                result.add(gameDetailsForm);
+        }
+        return result;
+    }
+
 
     public List<GameDetailsForm> listGames(int gameId, String type) {
         List<GameDetailsForm> result;
         if (type.equals("recommend")) {
             result = listRecommendedGames(gameId);
         } else if (type.equals("followees")) {
-            result = null;
+            result = listGamesOfFollowees();
         } else if (type.equals("distance")) {
-            result = null;
+            result = listCloseGames();
         } else {
             throw new IllegalArgumentException("The arguments you have provided are not correct.");
         }
         return result;
     }
+
 
 }

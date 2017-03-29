@@ -3,9 +3,11 @@ package es.eGames.controllers;
 import es.eGames.forms.GameDetailsForm;
 import es.eGames.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -51,6 +53,7 @@ public class DetailsGameController {
 
         return responseEntity;
     }
+
 
 
 }

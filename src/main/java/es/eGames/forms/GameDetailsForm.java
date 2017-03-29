@@ -146,4 +146,20 @@ public class GameDetailsForm {
     public void setGenres(Collection<Genre> genres) {
         this.genres = genres;
     }
+
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameDetailsForm that = (GameDetailsForm) o;
+
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

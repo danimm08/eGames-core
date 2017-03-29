@@ -38,7 +38,7 @@ public class PersonalGameService {
         super();
     }
 
-    public List<PersonalGame> findOrderedPersonalGamesByGameId(int gameId, String orderBy) {//TODO: Añadir formas de ordenar: seguidos primero
+    public List<PersonalGame> findOrderedPersonalGamesByGameId(int gameId, String orderBy) {
         List<PersonalGame> personalGameList;
         Assert.notNull(gameId);
         Assert.notNull(orderBy);
@@ -48,11 +48,13 @@ public class PersonalGameService {
             personalGameList = personalGameRepository.findByGameIdOrderByReputation(gameId);
         } else if (orderBy.equals("type")) {
             personalGameList = personalGameRepository.findByGameIdOrderByType(gameId);
+        } else if (orderBy.equals("folowees")) {
+            personalGameList = findPersonalGamesOfFollowees();
         } else if (orderBy.equals("distance")) {
             personalGameList = personalGameRepository.findByGameId(gameId);
             List<PersonalGame> personalGameIntegerMap = calculateNearestPersonalGames(personalGameList);
             List<PersonalGame> personalGamesWithDistance = calculateDistances(personalGameIntegerMap);
-            Collections.sort(personalGamesWithDistance, (personalGame, t1) -> personalGame.getDistance() < t1.getDistance() ? 0 : 1);
+            personalGamesWithDistance.sort(Comparator.comparing(PersonalGame::getDistance));
             return personalGamesWithDistance;
         } else {
             personalGameList = personalGameRepository.findByGameId(gameId);
@@ -61,7 +63,7 @@ public class PersonalGameService {
         return personalGameList;
     }
 
-    private List<PersonalGame> calculateNearestPersonalGames(List<PersonalGame> personalGameList) {
+    public List<PersonalGame> calculateNearestPersonalGames(List<PersonalGame> personalGameList) {
         Map<PersonalGame, Integer> res = new HashMap<>();
         User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         Integer userZip = new Integer(u.getAddress().getZip());
@@ -81,7 +83,7 @@ public class PersonalGameService {
         return new ArrayList<>(res.keySet());
     }
 
-    private List<PersonalGame> calculateDistances(List<PersonalGame> personalGameIntegerMap) {
+    public List<PersonalGame> calculateDistances(List<PersonalGame> personalGameIntegerMap) {
         List<PersonalGame> res = new ArrayList<>();
         User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         String[] origins = {u.getAddress().getZip() + " España"};
@@ -112,7 +114,7 @@ public class PersonalGameService {
             List<DistanceMatrixElement> elements = Arrays.asList(r.elements);
             for (DistanceMatrixElement e : elements) {
                 Assert.isTrue(e.status.equals(DistanceMatrixElementStatus.OK), "Ha habido algún error en el cálculo de las distancias");
-                Double distance = new Double(e.distance.humanReadable.replace(",", ".").split(" ")[0]);
+                Double distance = new Double(e.distance.humanReadable.replace(".", "").split(" ")[0]);
 
                 PersonalGame personalGame = personalGameIntegerMap.get(elements.indexOf(e));
                 personalGame.setDistance(distance);
@@ -173,4 +175,25 @@ public class PersonalGameService {
         PersonalGame pg = personalGameRepository.save(personalGame);
         return pg;
     }
+
+    public List<PersonalGame> findAll() {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameRepository.findAll();
+        return personalGames;
+    }
+
+    public List<PersonalGame> findAllExceptOfPrincipal() {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameRepository.findAllExceptOfPrincipal(UserDetailsService.getPrincipal().getUsername());
+        return personalGames;
+    }
+
+    public List<PersonalGame> findPersonalGamesOfFollowees() {
+        List<PersonalGame> personalGames;
+        int userId = userService.findByUsername(UserDetailsService.getPrincipal().getUsername()).getId();
+        personalGames = personalGameRepository.findPersonalGamesOfFollowees(userId);
+        return personalGames;
+    }
+
+
 }

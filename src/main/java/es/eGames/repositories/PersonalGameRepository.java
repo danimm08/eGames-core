@@ -32,4 +32,10 @@ public interface PersonalGameRepository extends JpaRepository<PersonalGame, Inte
 
     @Query("select pg from PersonalGame pg where pg.exchange.id = ?1 and pg.user.id = ?2")
     List<PersonalGame> findAllPersonalGameByUserAndExchange(int exchangeId, int userId);
+
+    @Query("select pg from PersonalGame pg where pg.user.userAccount.username not like ?1")
+    List<PersonalGame> findAllExceptOfPrincipal(String username);
+
+    @Query("select pg from PersonalGame pg where pg.user = ANY (select fw from User u join u.followees fw where u.id = ?1 )")
+    List<PersonalGame> findPersonalGamesOfFollowees(int principalId);
 }
