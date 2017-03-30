@@ -1,36 +1,24 @@
 package es.eGames.controllers;
 
+import es.eGames.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import es.eGames.services.ImageService;
 
 /**
  * Created by daniel on 15/03/17.
  */
 @RestController
+@RequestMapping(value = "/image")
 public class ImageController {
 
     @Autowired
     private ImageService imageService;
 
-    @RequestMapping(value = "user/profile_picture", method = RequestMethod.POST)
-    public ResponseEntity uploadProfilePicture(@RequestParam("image") MultipartFile image) throws Exception {
-        ResponseEntity responseEntity;
 
-        try {
-            imageService.saveProfilePicture(image);
-            responseEntity = ResponseEntity.ok().body("The image has been uploaded successfully");
-        } catch (IllegalArgumentException oops) {
-            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
-        }
-        return responseEntity;
-    }
-
-    @RequestMapping(value = "/images/download", method = RequestMethod.GET)
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity serveFile(@RequestParam String filename) {
@@ -52,17 +40,21 @@ public class ImageController {
         return responseEntity;
     }
 
-    @RequestMapping(value = "personalgame/upload", method = RequestMethod.POST)
-    public ResponseEntity uploadPersonalGamePicture(@RequestParam("image") MultipartFile image, @RequestParam String personalGameId) throws Exception {
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public ResponseEntity delete(@RequestParam String filename) {
+
         ResponseEntity responseEntity;
 
         try {
-            imageService.savePersonalGamePicture(image, personalGameId);
-            responseEntity = ResponseEntity.ok().body("The image has been uploaded successfully");
-        } catch (IllegalArgumentException oops) {
+            imageService.deletePicture(filename);
+            responseEntity = ResponseEntity.ok().build();
+
+        } catch (Exception oops) {
+            oops.printStackTrace();
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }
         return responseEntity;
+
     }
 
 

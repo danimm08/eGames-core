@@ -68,6 +68,17 @@ public class ImageService {
         }
     }
 
+    public void deletePicture(String fileName) throws Exception {
+        String rootPath = env.getProperty("es.eGames.images.rootPath");
+        String fullFileName = rootPath + "/" + fileName;
+
+        Image image = imageRepository.findByPathUrl(fileName);
+        imageRepository.delete(image.getId());
+
+        File file = new File(fullFileName);
+        file.delete();
+    }
+
 
     public Resource loadAsResource(String filename) throws Exception {
         String rootPath = env.getProperty("es.eGames.images.rootPath");
@@ -122,13 +133,13 @@ public class ImageService {
             String pathImageToSave = fullPath + "/" + image.getOriginalFilename();
             File imageToSave = new File(pathImageToSave);
             String filename;
-            if(imageToSave.exists()){
+            if (imageToSave.exists()) {
                 String[] splittedFilename = image.getOriginalFilename().split("\\.");
                 Random r = new Random();
                 splittedFilename[0] += r.nextInt();
 
                 filename = String.join(".", splittedFilename);
-            }else{
+            } else {
                 filename = image.getOriginalFilename();
             }
             pathImageToSave = fullPath + "/" + filename;

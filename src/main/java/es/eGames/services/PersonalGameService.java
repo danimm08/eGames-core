@@ -6,6 +6,7 @@ import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElement;
 import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.DistanceMatrixRow;
+import es.eGames.forms.PersonalGameForm;
 import es.eGames.model.PersonalGame;
 import es.eGames.model.User;
 import es.eGames.repositories.PersonalGameRepository;
@@ -196,4 +197,21 @@ public class PersonalGameService {
     }
 
 
+    public void editPersonalGame(int personalGameId, PersonalGameForm personalGameForm) {
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        PersonalGame personalGame = personalGameRepository.findOne(personalGameId);
+        Assert.isTrue(principal.equals(personalGame.getUser()));
+
+        if (!personalGameForm.getDescription().isEmpty())
+            personalGame.setDescription(personalGameForm.getDescription());
+
+        if (personalGameForm.getType()!=null)
+            personalGame.setType(personalGameForm.getType());
+
+        if (personalGameForm.getGame()!=null)
+            personalGame.setGame(personalGameForm.getGame());
+
+        personalGameRepository.save(personalGame);
+
+    }
 }

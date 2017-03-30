@@ -16,13 +16,13 @@ import javax.validation.Valid;
  * Created by daniel on 9/03/17.
  */
 @RestController
-@RequestMapping(value = "exchange/")
+@RequestMapping(value = "/exchange")
 public class ExchangeController {
 
     @Autowired
     private ExchangeService exchangeService;
 
-    @RequestMapping(value = "create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     @JsonView(View.DetailsOfPersonalGame.class)
     public ResponseEntity createExchange(@RequestParam int personalGameId) {
 

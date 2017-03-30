@@ -1,6 +1,7 @@
 package es.eGames.controllers;
 
 import es.eGames.forms.GameDetailsForm;
+import es.eGames.model.Game;
 import es.eGames.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -16,7 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/game")
-public class DetailsGameController {
+public class GameController {
 
     @Autowired
     private GameService gameService;
@@ -49,6 +51,22 @@ public class DetailsGameController {
             responseEntity = ResponseEntity.ok().body(personalGameList);
         } catch (Exception oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+
+        return responseEntity;
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public ResponseEntity<List<Game>> listVideogames(@RequestParam(required = false, defaultValue = "") String filterBy, @RequestParam(required = false, defaultValue = "") String param) throws Exception {
+
+        ResponseEntity responseEntity;
+        Collection<Game> games;
+        games = gameService.gameList(filterBy,param);
+
+        if (games != null) {
+            responseEntity = ResponseEntity.ok().body(games);
+        } else {
+            responseEntity = ResponseEntity.badRequest().build();
         }
 
         return responseEntity;

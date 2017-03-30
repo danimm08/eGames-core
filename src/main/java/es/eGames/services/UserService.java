@@ -1,8 +1,10 @@
 package es.eGames.services;
 
 import es.eGames.forms.RegistrationForm;
+import es.eGames.forms.UserProfileForm;
 import es.eGames.model.User;
 import es.eGames.model.UserAccount;
+import es.eGames.security.UserDetailsService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,7 @@ public class UserService {
         super();
     }
 
-    public User findById(int id){
+    public User findById(int id) {
         User user;
         user = userRepository.findOne(id);
         Assert.notNull(user);
@@ -54,7 +56,7 @@ public class UserService {
         return u;
     }
 
-    public User findByUsername(String username){
+    public User findByUsername(String username) {
         User user;
         user = userRepository.findByUsername(username);
         Assert.notNull(user);
@@ -71,5 +73,21 @@ public class UserService {
     public void update(User principal) {
         Assert.notNull(principal);
         userRepository.save(principal);
+    }
+
+    public void editProfile(UserProfileForm userProfileForm) {
+        User principal = userRepository.findByUsername(UserDetailsService.getPrincipal().getUsername());
+
+        if (!userProfileForm.getName().isEmpty())
+            principal.setName(userProfileForm.getName());
+
+        if (!userProfileForm.getSurname().isEmpty())
+            principal.setSurname(userProfileForm.getSurname());
+
+        if (!userProfileForm.getAddress().equals(principal.getAddress()))
+            principal.setAddress(userProfileForm.getAddress());
+
+        update(principal);
+
     }
 }
