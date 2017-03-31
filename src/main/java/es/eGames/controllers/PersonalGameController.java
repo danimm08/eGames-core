@@ -92,7 +92,7 @@ public class PersonalGameController {
         return responseEntity;
     }
 
-    @RequestMapping(value = "upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ResponseEntity uploadPersonalGamePicture(@RequestParam("image") MultipartFile image, @RequestParam String personalGameId) throws Exception {
         ResponseEntity responseEntity;
 
@@ -105,4 +105,16 @@ public class PersonalGameController {
         return responseEntity;
     }
 
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public ResponseEntity deletePersonalGame(@RequestParam int personalGameId){
+        ResponseEntity responseEntity;
+
+        try{
+            personalGameService.delete(personalGameId);
+            responseEntity = ResponseEntity.ok().build();
+        }catch(Exception oops){
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+        return responseEntity;
+    }
 }

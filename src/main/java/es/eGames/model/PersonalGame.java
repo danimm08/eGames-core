@@ -2,12 +2,12 @@ package es.eGames.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.hibernate.validator.constraints.NotBlank;
 import es.eGames.views.View;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by daniel on 4/02/17.
@@ -27,7 +27,7 @@ public class PersonalGame extends BaseEntity {
 
     private Game game;
     private User user;
-    private List<Image> images;
+    private Set<Image> images;
 
     public PersonalGame() {
         super();
@@ -109,11 +109,11 @@ public class PersonalGame extends BaseEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "personalGame")
     @JsonView(View.ListPersonalGame.class)
-    public List<Image> getImages() {
+    public Set<Image> getImages() {
         return images;
     }
 
-    public void setImages(List<Image> images) {
+    public void setImages(Set<Image> images) {
         this.images = images;
     }
 }

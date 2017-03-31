@@ -7,6 +7,7 @@ import com.google.maps.model.DistanceMatrixElement;
 import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.DistanceMatrixRow;
 import es.eGames.forms.PersonalGameForm;
+import es.eGames.model.Image;
 import es.eGames.model.PersonalGame;
 import es.eGames.model.User;
 import es.eGames.repositories.PersonalGameRepository;
@@ -31,6 +32,9 @@ public class PersonalGameService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private Environment env;
@@ -205,13 +209,28 @@ public class PersonalGameService {
         if (!personalGameForm.getDescription().isEmpty())
             personalGame.setDescription(personalGameForm.getDescription());
 
-        if (personalGameForm.getType()!=null)
+        if (personalGameForm.getType() != null)
             personalGame.setType(personalGameForm.getType());
 
-        if (personalGameForm.getGame()!=null)
+        if (personalGameForm.getGame() != null)
             personalGame.setGame(personalGameForm.getGame());
 
         personalGameRepository.save(personalGame);
 
+    }
+
+    public void delete(int personalGameId) {
+        PersonalGame personalGame = personalGameRepository.findOne(personalGameId);
+        Assert.isTrue(personalGame.getExchange() == null,"No se puede eliminar un juego que esté involucrado en un intercambio");
+
+        Set<Image> images = personalGame.getImages();
+        try {
+            for (Image i : images) {
+                imageService.deletePicture(i.getPathUrl());
+            }
+            personalGameRepository.delete(personalGame);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
