@@ -84,6 +84,9 @@ public class ExchangeService {
         }
 
         Assert.isTrue(ef.getPersonalGamesUser2().size() > 0, "A game has to be selected to exchange");
+        if (!exchange.getUser().equals(u)) {
+            Assert.isTrue(ef.getPersonalGamesUser1().size() > 0, "A game has to be selected to exchange");
+        }
 
         ef.getPersonalGamesUser1().forEach(personalGame -> {
             Assert.isTrue(personalGame.getExchange() == null, "This personal game is not available to exchange it");
@@ -105,6 +108,8 @@ public class ExchangeService {
         Exchange exchange = exchangeRepository.findOne(exchangeId);
         Assert.notNull(exchange);
         if (isAccept) {
+            Assert.isTrue(extractPersonalGamesByExchange(exchangeId).get("user1").size()>0);
+            Assert.isTrue(extractPersonalGamesByExchange(exchangeId).get("user2").size()>0);
             exchange.setStatus(true);
         } else {
             exchange.setStatus(false);
