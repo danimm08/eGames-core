@@ -1,18 +1,17 @@
 package es.eGames.services;
 
+import es.eGames.forms.DetailsOfExchangeForm;
 import es.eGames.forms.ExchangeForm;
 import es.eGames.model.*;
+import es.eGames.repositories.ExchangeRepository;
+import es.eGames.security.UserDetailsService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import es.eGames.repositories.ExchangeRepository;
-import es.eGames.security.UserDetailsService;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by daniel on 9/03/17.
@@ -84,15 +83,15 @@ public class ExchangeService {
             noteService.save(note);
         }
 
-        Assert.isTrue( ef.getPersonalGamesUser2().size()>0, "A game has to be selected to exchange");
+        Assert.isTrue(ef.getPersonalGamesUser2().size() > 0, "A game has to be selected to exchange");
 
         ef.getPersonalGamesUser1().forEach(personalGame -> {
-            Assert.isTrue(personalGame.getExchange()==null, "This personal game is not available to exchange it");
+            Assert.isTrue(personalGame.getExchange() == null, "This personal game is not available to exchange it");
             personalGame.setExchange(res);
             personalGameService.save(personalGame);
         });
         ef.getPersonalGamesUser2().forEach(personalGame -> {
-            Assert.isTrue(personalGame.getExchange()==null, "This personal game is not available to exchange it");
+            Assert.isTrue(personalGame.getExchange() == null, "This personal game is not available to exchange it");
             personalGame.setExchange(res);
             personalGameService.save(personalGame);
         });
@@ -140,8 +139,8 @@ public class ExchangeService {
 
         Exchange res = exchangeRepository.save(exchange);
 
-        Assert.isTrue( ef.getPersonalGamesUser2().size()>0, "A game has to be selected to exchange");
-        Assert.isTrue( ef.getPersonalGamesUser1().size()>0, "A game has to be selected to exchange");
+        Assert.isTrue(ef.getPersonalGamesUser2().size() > 0, "A game has to be selected to exchange");
+        Assert.isTrue(ef.getPersonalGamesUser1().size() > 0, "A game has to be selected to exchange");
 
         if (ef.getNotes().size() > 0) {
             Note note = ef.getNotes().get(ef.getNotes().size() - 1);
@@ -159,13 +158,13 @@ public class ExchangeService {
 
 
         ef.getPersonalGamesUser1().forEach(personalGame -> {
-            Assert.isTrue(personalGame.getExchange()==null, "This personal game is not available to exchange it");
+            Assert.isTrue(personalGame.getExchange() == null, "This personal game is not available to exchange it");
             personalGame.setExchange(res);
             personalGameService.save(personalGame);
         });
 
         ef.getPersonalGamesUser2().forEach(personalGame -> {
-            Assert.isTrue(personalGame.getExchange()==null, "This personal game is not available to exchange it");
+            Assert.isTrue(personalGame.getExchange() == null, "This personal game is not available to exchange it");
             personalGame.setExchange(res);
             personalGameService.save(personalGame);
         });
@@ -174,19 +173,31 @@ public class ExchangeService {
 
     }
 
-    public ExchangeForm getExchangeForm(int exchangeId) {
-
+    private Map<String, List<PersonalGame>> extractPersonalGamesByExchange(int exchangeId) {
+        Map<String, List<PersonalGame>> res = new HashMap<>();
         Exchange exchange = exchangeRepository.findOne(exchangeId);
         Assert.notNull(exchange);
         User u1 = exchange.getUser();
         PersonalGame auxPersonalGame = personalGameService.findAllPersonalGameByExchange(exchangeId)
                 .stream().filter(personalGame -> personalGame.getExchange().getId() == exchangeId && personalGame.getUser().getId() != u1.getId()).findAny().get();
-        System.out.println(auxPersonalGame);
         User u2 = auxPersonalGame.getUser();
+        List<PersonalGame> listPersonalGameUser1 = personalGameService.findAllPersonalGameByUserAndExchange(exchangeId, u1.getId());
+        List<PersonalGame> listPersonalGameUser2 = personalGameService.findAllPersonalGameByUserAndExchange(exchangeId, u2.getId());
+
+        res.put("user1", listPersonalGameUser1);
+        res.put("user2", listPersonalGameUser2);
+
+        return res;
+    }
+
+    public ExchangeForm getExchangeForm(int exchangeId) {
+
+        Map<String, List<PersonalGame>> map = extractPersonalGamesByExchange(exchangeId);
+        Exchange exchange = exchangeRepository.findOne(exchangeId);
 
         ExchangeForm ef = new ExchangeForm();
-        ef.setPersonalGamesUser1(personalGameService.findAllPersonalGameByUserAndExchange(exchangeId, u1.getId()));
-        ef.setPersonalGamesUser2(personalGameService.findAllPersonalGameByUserAndExchange(exchangeId, u2.getId()));
+        ef.setPersonalGamesUser1(map.get("user1"));
+        ef.setPersonalGamesUser2(map.get("user2"));
         ef.setWayExchange(exchange.getWayExchange());
         ef.setType(exchange.getType());
         List<Note> notes = noteService.findNotesByExchange(exchangeId);
@@ -195,5 +206,20 @@ public class ExchangeService {
         return ef;
 
 
+    }
+
+    public List<DetailsOfExchangeForm> getListOfMyExchanges() {
+        User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        Assert.isTrue(u != null, "You must be logged in to use this feature");
+        List<Exchange> myExchanges = exchangeRepository.findByUserId(u.getId());
+        List<DetailsOfExchangeForm> myDetailsOfExchangesForm = new ArrayList<>();
+        for (Exchange e : myExchanges) {
+            Map<String, List<PersonalGame>> map = extractPersonalGamesByExchange(e.getId());
+            Set<PersonalGame> personalGameUser1 = new HashSet(map.get("user1"));
+            Set<PersonalGame> personalGameUser2 = new HashSet(map.get("user2"));
+            DetailsOfExchangeForm detailsOfExchangeForm = new DetailsOfExchangeForm(e, personalGameUser1, personalGameUser2);
+            myDetailsOfExchangesForm.add(detailsOfExchangeForm);
+        }
+        return myDetailsOfExchangesForm;
     }
 }

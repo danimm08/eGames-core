@@ -1,16 +1,18 @@
 package es.eGames.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import es.eGames.errors.HandleValidationErrors;
+import es.eGames.forms.DetailsOfExchangeForm;
 import es.eGames.forms.ExchangeForm;
+import es.eGames.services.ExchangeService;
+import es.eGames.views.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import es.eGames.services.ExchangeService;
-import es.eGames.errors.HandleValidationErrors;
-import es.eGames.views.View;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by daniel on 9/03/17.
@@ -50,11 +52,11 @@ public class ExchangeController {
         return responseEntity;
     }
 
-    @RequestMapping(value="/accept", method = RequestMethod.GET)
-    public ResponseEntity accept(@RequestParam int exchangeId){
+    @RequestMapping(value = "/accept", method = RequestMethod.GET)
+    public ResponseEntity accept(@RequestParam int exchangeId) {
         ResponseEntity responseEntity;
         try {
-            responseEntity = ResponseEntity.ok().body(exchangeService.acceptOrDecline(exchangeId,true));
+            responseEntity = ResponseEntity.ok().body(exchangeService.acceptOrDecline(exchangeId, true));
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }
@@ -62,11 +64,11 @@ public class ExchangeController {
 
     }
 
-    @RequestMapping(value="/decline", method = RequestMethod.GET)
-    public ResponseEntity decline(@RequestParam int exchangeId){
+    @RequestMapping(value = "/decline", method = RequestMethod.GET)
+    public ResponseEntity decline(@RequestParam int exchangeId) {
         ResponseEntity responseEntity;
         try {
-            responseEntity = ResponseEntity.ok().body(exchangeService.acceptOrDecline(exchangeId,false));
+            responseEntity = ResponseEntity.ok().body(exchangeService.acceptOrDecline(exchangeId, false));
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }
@@ -74,7 +76,7 @@ public class ExchangeController {
 
     }
 
-    @RequestMapping(value="/getExchangeInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/getExchangeInfo", method = RequestMethod.GET)
     @JsonView(View.DetailsOfPersonalGame.class)
     public ResponseEntity getExchangeInfo(@RequestParam int exchangeId) {
 
@@ -97,7 +99,22 @@ public class ExchangeController {
             responseEntity = ResponseEntity.badRequest().body(HandleValidationErrors.mapErros(bindingResult, exchangeForm));
 
         } else {
-            responseEntity = ResponseEntity.ok().body(exchangeService.negotiate(exchangeForm,exchangeId));
+            responseEntity = ResponseEntity.ok().body(exchangeService.negotiate(exchangeForm, exchangeId));
+        }
+        return responseEntity;
+    }
+
+    @RequestMapping(value = "/getMyExchanges", method = RequestMethod.GET)
+    @JsonView(View.DetailsOfPersonalGame.class)
+    public ResponseEntity getListOfMyExchanges() {
+
+        ResponseEntity responseEntity;
+
+        try {
+            List<DetailsOfExchangeForm> myExchanges = exchangeService.getListOfMyExchanges();
+            responseEntity = ResponseEntity.ok().body(myExchanges);
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }
         return responseEntity;
     }

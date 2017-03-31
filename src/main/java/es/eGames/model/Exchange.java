@@ -24,7 +24,6 @@ public class Exchange extends BaseEntity{
     private User user;
 
 
-
     public Exchange() {
         super();
     }
