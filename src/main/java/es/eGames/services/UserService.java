@@ -2,16 +2,15 @@ package es.eGames.services;
 
 import es.eGames.forms.RegistrationForm;
 import es.eGames.forms.UserProfileForm;
-import es.eGames.model.Game;
 import es.eGames.model.User;
 import es.eGames.model.UserAccount;
+import es.eGames.repositories.UserRepository;
 import es.eGames.security.UserDetailsService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import es.eGames.repositories.UserRepository;
 
 import java.util.List;
 
@@ -99,4 +98,17 @@ public class UserService {
         users = userRepository.search(toSearch);
         return users;
     }
+
+    public void followOrUnfollow(String username) {
+        User principal = userRepository.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        User toFollow = userRepository.findByUsername(username);
+        if (!principal.getFollowees().contains(toFollow)) {
+            principal.getFollowees().add(toFollow);
+            toFollow.getFollowers().add(principal);
+        } else {
+            principal.getFollowees().remove(toFollow);
+            toFollow.getFollowers().remove(principal);
+        }
+    }
 }
+

@@ -6,7 +6,6 @@ package es.eGames.controllers;
 
 import es.eGames.errors.HandleValidationErrors;
 import es.eGames.forms.UserProfileForm;
-import es.eGames.model.Game;
 import es.eGames.model.User;
 import es.eGames.services.ImageService;
 import es.eGames.services.UserService;
@@ -82,6 +81,21 @@ public class UserController {
         try {
             List<User> games = userService.search(toSearch);
             responseEntity = ResponseEntity.ok().body(games);
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+
+        return responseEntity;
+
+    }
+
+    @RequestMapping(value = "/follow", method = RequestMethod.GET)
+    public ResponseEntity followOrUnfollow(@RequestParam String username) {
+        ResponseEntity responseEntity;
+
+        try {
+            userService.followOrUnfollow(username);
+            responseEntity = ResponseEntity.ok().build();
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }
