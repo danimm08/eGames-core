@@ -1,5 +1,7 @@
 package es.eGames.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import es.eGames.views.View;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Access;
@@ -30,6 +32,7 @@ public class Message extends BaseEntity {
     }
 
     @NotBlank
+    @JsonView(View.DetailsOfPersonalGame.class)
     public String getText() {
         return text;
     }
@@ -40,6 +43,7 @@ public class Message extends BaseEntity {
 
     @NotNull
     @Past
+    @JsonView(View.DetailsOfPersonalGame.class)
     public Date getMoment() {
         return moment;
     }
@@ -49,6 +53,7 @@ public class Message extends BaseEntity {
     }
 
     @NotNull
+    @JsonView(View.DetailsOfPersonalGame.class)
     public Boolean getStatus() {
         return status;
     }
@@ -59,6 +64,7 @@ public class Message extends BaseEntity {
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public User getSender() {
         return sender;
     }
@@ -69,6 +75,7 @@ public class Message extends BaseEntity {
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public User getRecipient() {
         return recipient;
     }
