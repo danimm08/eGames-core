@@ -136,4 +136,9 @@ public class GameService {
     }
 
 
+    public List<Game> search(String toSearch) {
+        List<Game> games;
+        games = gameRepository.search(toSearch);
+        return games;
+    }
 }

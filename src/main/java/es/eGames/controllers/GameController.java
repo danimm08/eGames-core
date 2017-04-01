@@ -31,7 +31,6 @@ public class GameController {
 
         try {
             GameDetailsForm game = gameService.detailsOfGame(new Integer(gameId), orderBy);
-            System.out.println(orderBy);
             responseEntity = ResponseEntity.ok().body(game);
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
@@ -72,6 +71,21 @@ public class GameController {
         return responseEntity;
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResponseEntity search(@RequestParam String toSearch) {
+
+        ResponseEntity responseEntity;
+
+        try {
+            List<Game> games = gameService.search(toSearch);
+            responseEntity = ResponseEntity.ok().body(games);
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+
+        return responseEntity;
+
+    }
 
 
 }

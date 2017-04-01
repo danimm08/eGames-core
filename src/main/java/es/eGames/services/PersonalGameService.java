@@ -221,7 +221,7 @@ public class PersonalGameService {
 
     public void delete(int personalGameId) {
         PersonalGame personalGame = personalGameRepository.findOne(personalGameId);
-        Assert.isTrue(personalGame.getExchange() == null,"No se puede eliminar un juego que esté involucrado en un intercambio");
+        Assert.isTrue(personalGame.getExchange() == null, "No se puede eliminar un juego que esté involucrado en un intercambio");
 
         Set<Image> images = personalGame.getImages();
         try {
@@ -232,5 +232,11 @@ public class PersonalGameService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<PersonalGame> search(String toSearch) {
+        List<PersonalGame> games;
+        games = personalGameRepository.search(toSearch);
+        return games;
     }
 }

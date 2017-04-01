@@ -2,6 +2,7 @@ package es.eGames.services;
 
 import es.eGames.forms.RegistrationForm;
 import es.eGames.forms.UserProfileForm;
+import es.eGames.model.Game;
 import es.eGames.model.User;
 import es.eGames.model.UserAccount;
 import es.eGames.security.UserDetailsService;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import es.eGames.repositories.UserRepository;
+
+import java.util.List;
 
 /**
  * Created by daniel on 11/02/17.
@@ -89,5 +92,11 @@ public class UserService {
 
         update(principal);
 
+    }
+
+    public List<User> search(String toSearch) {
+        List<User> users;
+        users = userRepository.search(toSearch);
+        return users;
     }
 }

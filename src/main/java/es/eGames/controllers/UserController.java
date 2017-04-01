@@ -6,6 +6,7 @@ package es.eGames.controllers;
 
 import es.eGames.errors.HandleValidationErrors;
 import es.eGames.forms.UserProfileForm;
+import es.eGames.model.Game;
 import es.eGames.model.User;
 import es.eGames.services.ImageService;
 import es.eGames.services.UserService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -70,6 +72,22 @@ public class UserController {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }
         return responseEntity;
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ResponseEntity search(@RequestParam String toSearch) {
+
+        ResponseEntity responseEntity;
+
+        try {
+            List<User> games = userService.search(toSearch);
+            responseEntity = ResponseEntity.ok().body(games);
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+
+        return responseEntity;
+
     }
 
 }

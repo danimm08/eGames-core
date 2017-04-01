@@ -106,15 +106,32 @@ public class PersonalGameController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public ResponseEntity deletePersonalGame(@RequestParam int personalGameId){
+    public ResponseEntity deletePersonalGame(@RequestParam int personalGameId) {
         ResponseEntity responseEntity;
 
-        try{
+        try {
             personalGameService.delete(personalGameId);
             responseEntity = ResponseEntity.ok().build();
-        }catch(Exception oops){
+        } catch (Exception oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }
         return responseEntity;
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @JsonView(View.ListPersonalGame.class)
+    public ResponseEntity search(@RequestParam String toSearch) {
+
+        ResponseEntity responseEntity;
+
+        try {
+            List<PersonalGame> games = personalGameService.search(toSearch);
+            responseEntity = ResponseEntity.ok().body(games);
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+
+        return responseEntity;
+
     }
 }

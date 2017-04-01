@@ -18,13 +18,8 @@ public class UserAccount extends BaseEntity implements UserDetails {
 
 
     private String username;
-
-
     private String password;
-
-
     private String email;
-
 
     private Set<Authority> authorities;
 
