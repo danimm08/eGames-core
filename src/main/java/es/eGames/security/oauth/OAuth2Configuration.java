@@ -53,7 +53,7 @@ public class OAuth2Configuration {
                     .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/oauth/authorize"))
                     .disable()
                     .headers()
-                    .frameOptions().disable()
+                    .frameOptions().disable().and()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()

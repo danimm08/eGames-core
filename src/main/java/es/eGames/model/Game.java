@@ -1,6 +1,5 @@
 package es.eGames.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import es.eGames.views.View;
@@ -56,7 +55,6 @@ public class Game extends BaseEntity {
         this.coverUrl = coverUrl;
     }
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm a z")
     public Date getFirstReleaseDate() {
         return firstReleaseDate;
     }
