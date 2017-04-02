@@ -3,8 +3,8 @@ INSERT INTO personal_game (description, number_of_views, type, game_id, user_id,
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Ya me pasé el modo historia y no tengo suscripción para poder jugar online, por eso lo quiero cambiar. Es un juegazo.",0,"Fijo", 176, 1,5);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo cambio por algún CoD, ya que este juego no me ha terminado de convencer",0,"Fijo", 354, 1,5);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo intercambio momentáneamente, ya que ahora juego más a juegos con modo historia.",0,"Temporal", 583, 2,2);
-INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo intercambio momentáneamente, ya que ahora juego más a juegos con modo historia.",0,"Temporal", 691, 2,NULL);
-INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo cambio porque me lo regalaron y no me gustó, pero quizás a un fan de AC le guste.",0,"Fijo", 732, 3,NULL);
+INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo intercambio momentáneamente, ya que ahora juego más a juegos con modo historia.",0,"Temporal", 691, 2,6);
+INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo cambio porque me lo regalaron y no me gustó, pero quizás a un fan de AC le guste.",0,"Fijo", 732, 3,6);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo intercambio por otro momentánemanete porque quiero pasarme otros juegos, pero lo quiero de vuelta, porque es una joya de juego.",0,"Temporal", 182, 4,2);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo intercambio por otro momentánemanete porque quiero pasarme otros juegos, pero lo quiero de vuelta, porque es una joya de juego.",0,"Temporal", 237, 4,NULL);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Lo intercambio porque me ha decepcionado mucho, si alguien lo quiere...",0,"Fijo", 307, 4,3);
@@ -15,3 +15,6 @@ INSERT INTO personal_game (description, number_of_views, type, game_id, user_id,
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Ya lo pasé, pero quiero el juego de vuelta, porque me divierto jugando de vez en cuando.",0,"Temporal", 719, 7,NULL);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Ya me lo he pasado.",0,"Fijo", 1819, 8,5);
 INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Mi tío me lo regaló, pero es una verdadera basura para mí, que soy fan del Fifa",0,"Fijo", 4374, 9,4);
+INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Me he cansado de él, como me pasa con todos los CoD",0,"Fijo", 110, 9,NULL);
+INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Juego muy bueno, pero ahora prefiero otros tipos de juegos",0,"Fijo", 110, 8,NULL);
+INSERT INTO personal_game (description, number_of_views, type, game_id, user_id, exchange_id) VALUES ("Grandisimo juego, pero ya me lo he pasado y quiero disfrutar otros",0,"Fijo", 182, 6,NULL);

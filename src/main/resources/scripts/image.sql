@@ -16,3 +16,6 @@ INSERT INTO image (path_url, personal_game_id) VALUES ("username5/personalGames/
 INSERT INTO image (path_url, personal_game_id) VALUES ("username6/personalGames/NBA 2K16/15-09-16-10-43_0_81bspreknfl._sx425_.jpg",11);
 INSERT INTO image (path_url, personal_game_id) VALUES ("username7/personalGames/Far Cry: Primal/freedvdcover_far-cry-primal-2016-ps4-custom-1-610x357.jpg",12);
 INSERT INTO image (path_url, personal_game_id) VALUES ("username8/personalGames/Watch Dogs 2/watch-dogs-2-playstation4-qatar-ps4.jpg",13);
+INSERT INTO image (path_url, personal_game_id) VALUES ("username9/personalGames/Call of Duty: Black Ops III/freedvdcover_call-of-duty-black-ops-iii-pal-cover-xbox-one-610x339.jpg",17);
+INSERT INTO image (path_url, personal_game_id) VALUES ("username8/personalGames/Call of Duty: Black Ops III/image_the_witcher_3_wild_hunt-22370-2651_00061.jpg",18);
+INSERT INTO image (path_url, personal_game_id) VALUES ("username4/personalGames/Uncharted 4: A Thief's End/Uncharted-4-Standard-Edition-v2.png",19);

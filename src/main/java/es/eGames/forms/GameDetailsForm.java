@@ -10,6 +10,7 @@ import es.eGames.serializers.CustomPersonalGameSerializer;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by daniel on 1/03/17.
@@ -27,7 +28,7 @@ public class GameDetailsForm {
     private Integer timeToBeat;
     private Platform platform;
     private Collection<PersonalGame> personalGames;
-    private Collection<Genre> genres;
+    private Set<Genre> genres;
 
 
     public GameDetailsForm() {
@@ -143,7 +144,7 @@ public class GameDetailsForm {
         return genres;
     }
 
-    public void setGenres(Collection<Genre> genres) {
+    public void setGenres(Set<Genre> genres) {
         this.genres = genres;
     }
 

@@ -3,13 +3,13 @@ package es.eGames.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.hibernate.validator.constraints.NotBlank;
 import es.eGames.views.View;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by daniel on 4/02/17.
@@ -28,9 +28,9 @@ public class Game extends BaseEntity {
     private Integer timeToBeat;
 
     private Platform platform;
-    private Collection<Genre> genres;
-    private Collection<GameMode> gameModes;
-    private Collection<Keyword> keywords;
+    private Set<Genre> genres;
+    private Set<GameMode> gameModes;
+    private Set<Keyword> keywords;
 
 
     public Game() {
@@ -112,32 +112,32 @@ public class Game extends BaseEntity {
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER) //fetch = FetchType.EAGER
-    public Collection<Genre> getGenres() {
+    public Set<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(Collection<Genre> genres) {
+    public void setGenres(Set<Genre> genres) {
         this.genres = genres;
     }
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
-    public Collection<GameMode> getGameModes() {
+    public Set<GameMode> getGameModes() {
         return gameModes;
     }
 
-    public void setGameModes(Collection<GameMode> gameModes) {
+    public void setGameModes(Set<GameMode> gameModes) {
         this.gameModes = gameModes;
     }
 
     @NotNull
     @ManyToMany
     @JsonIgnore
-    public Collection<Keyword> getKeywords() {
+    public Set<Keyword> getKeywords() {
         return keywords;
     }
 
-    public void setKeywords(Collection<Keyword> keywords) {
+    public void setKeywords(Set<Keyword> keywords) {
         this.keywords = keywords;
     }
 

@@ -134,8 +134,8 @@ public class PersonalGameService {
         Assert.notNull(personalGameId);
         PersonalGame personalGame;
         personalGame = personalGameRepository.findOne(new Integer(personalGameId));
-        personalGame.getGame().setGenres(new ArrayList<>());
-        personalGame.getGame().setGameModes(new ArrayList<>());
+        personalGame.getGame().setGenres(new HashSet<>());
+        personalGame.getGame().setGameModes(new HashSet<>());
         personalGame.getUser().setFollowees(null);
         personalGame.getUser().setFollowers(null);
 
