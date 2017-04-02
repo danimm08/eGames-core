@@ -6,7 +6,6 @@ import es.eGames.model.User;
 import es.eGames.model.UserAccount;
 import es.eGames.repositories.UserRepository;
 import es.eGames.security.services.UserDetailsService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,12 +34,10 @@ public class UserService {
         User user;
         user = userRepository.findOne(id);
         Assert.notNull(user);
-        Hibernate.initialize(user.getFollowees());
-        Hibernate.initialize(user.getFollowers());
         return user;
     }
 
-    public User save(RegistrationForm registrationForm) {
+    public User register(RegistrationForm registrationForm) {
         UserAccount ua = userAccountService.save(userAccountService.toUserAccount(registrationForm));
         User u = this.toUser(registrationForm);
         u.setUserAccount(ua);
@@ -109,6 +106,10 @@ public class UserService {
             principal.getFollowees().remove(toFollow);
             toFollow.getFollowers().remove(principal);
         }
+    }
+
+    public User save(User u) {
+        return userRepository.save(u);
     }
 }
 

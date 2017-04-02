@@ -4,7 +4,6 @@ import es.eGames.forms.GameDetailsForm;
 import es.eGames.model.Game;
 import es.eGames.model.PersonalGame;
 import es.eGames.repositories.GameRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
@@ -16,7 +15,10 @@ import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by daniel on 28/02/17.
@@ -48,9 +50,6 @@ public class GameService {
             } else {
                 games = gameRepository.findAll();
             }
-//          Initialize lazy collections
-            games.forEach(game -> Hibernate.initialize(game.getGenres()));
-            games.forEach(game -> Hibernate.initialize(game.getGameModes()));
         } else {
             games = null;
         }
@@ -62,8 +61,6 @@ public class GameService {
 
         Game game = gameRepository.findOne(gameId);
         Assert.notNull(game);
-        Hibernate.initialize(game.getGenres());
-        Hibernate.initialize(game.getGameModes());
 
         List<PersonalGame> personalGameList;
         personalGameList = personalGameService.findOrderedPersonalGamesByGameId(gameId, orderBy);

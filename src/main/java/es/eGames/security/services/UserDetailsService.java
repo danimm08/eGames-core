@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import es.eGames.repositories.UserAccountRepository;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,6 +50,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     public static UserDetails getPrincipal() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Assert.notNull(auth, "You must be logged in");
         return (UserDetails) auth.getPrincipal();
     }
 

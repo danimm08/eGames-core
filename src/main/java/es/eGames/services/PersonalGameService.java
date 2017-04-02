@@ -181,6 +181,10 @@ public class PersonalGameService {
         return pg;
     }
 
+    public PersonalGame simpleSave(PersonalGame personalGame) {
+        return personalGameRepository.save(personalGame);
+    }
+
     public List<PersonalGame> findAll() {
         List<PersonalGame> personalGames;
         personalGames = personalGameRepository.findAll();

@@ -83,7 +83,7 @@ public class ExchangeController {
         ResponseEntity responseEntity;
 
         try {
-            ExchangeForm ef = exchangeService.getExchangeForm(exchangeId);
+            ExchangeForm ef = exchangeService.getExchangeInfo(exchangeId);
             responseEntity = ResponseEntity.ok().body(ef);
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());

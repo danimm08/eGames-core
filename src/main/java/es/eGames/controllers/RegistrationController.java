@@ -30,7 +30,7 @@ public class RegistrationController {
             responseEntity = ResponseEntity.badRequest().body(HandleValidationErrors.mapErros(bindingResult, registrationForm));
 
         } else {
-            responseEntity = ResponseEntity.ok().body(userService.save(registrationForm));
+            responseEntity = ResponseEntity.ok().body(userService.register(registrationForm));
         }
         return responseEntity;
     }

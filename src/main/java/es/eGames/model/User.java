@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
 import es.eGames.serializers.CustomFollowersFolloweesSerializer;
 import es.eGames.views.View;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -96,6 +98,7 @@ public class User extends BaseEntity {
     }
 
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonSerialize(using = CustomFollowersFolloweesSerializer.class)
     public Collection<User> getFollowers() {
         return followers;
@@ -106,6 +109,7 @@ public class User extends BaseEntity {
     }
 
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonSerialize(using = CustomFollowersFolloweesSerializer.class)
     public Collection<User> getFollowees() {
         return followees;
