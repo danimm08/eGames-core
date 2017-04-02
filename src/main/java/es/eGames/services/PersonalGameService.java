@@ -11,7 +11,7 @@ import es.eGames.model.Image;
 import es.eGames.model.PersonalGame;
 import es.eGames.model.User;
 import es.eGames.repositories.PersonalGameRepository;
-import es.eGames.security.UserDetailsService;
+import es.eGames.security.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;

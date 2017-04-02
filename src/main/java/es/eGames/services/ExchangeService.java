@@ -4,7 +4,7 @@ import es.eGames.forms.DetailsOfExchangeForm;
 import es.eGames.forms.ExchangeForm;
 import es.eGames.model.*;
 import es.eGames.repositories.ExchangeRepository;
-import es.eGames.security.UserDetailsService;
+import es.eGames.security.services.UserDetailsService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

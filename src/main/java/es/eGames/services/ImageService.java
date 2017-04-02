@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 import es.eGames.repositories.ImageRepository;
-import es.eGames.security.UserDetailsService;
+import es.eGames.security.services.UserDetailsService;
 
 import java.io.File;
 import java.io.IOException;

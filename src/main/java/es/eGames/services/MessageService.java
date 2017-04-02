@@ -4,7 +4,7 @@ import es.eGames.forms.MessageForm;
 import es.eGames.model.Message;
 import es.eGames.model.User;
 import es.eGames.repositories.MessageRepository;
-import es.eGames.security.UserDetailsService;
+import es.eGames.security.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

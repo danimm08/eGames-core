@@ -6,7 +6,7 @@ import es.eGames.model.Authority;
 import es.eGames.model.UserAccount;
 import es.eGames.repositories.AuthorityRepository;
 import es.eGames.repositories.UserAccountRepository;
-import es.eGames.security.UserDetailsService;
+import es.eGames.security.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;

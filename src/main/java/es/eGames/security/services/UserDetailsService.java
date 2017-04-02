@@ -1,4 +1,4 @@
-package es.eGames.security;
+package es.eGames.security.services;
 
 import es.eGames.model.Authority;
 import es.eGames.model.UserAccount;

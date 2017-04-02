@@ -1,4 +1,4 @@
-package es.eGames.security;
+package es.eGames.security.aux;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

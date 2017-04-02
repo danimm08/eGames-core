@@ -1,4 +1,4 @@
-package es.eGames.security;
+package es.eGames.security.aux;
 
 public enum Authorities {
 

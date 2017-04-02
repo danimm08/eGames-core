@@ -1,4 +1,4 @@
-package es.eGames.security;
+package es.eGames.security.aux;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

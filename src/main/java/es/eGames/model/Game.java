@@ -71,7 +71,7 @@ public class Game extends BaseEntity {
         this.publisher = publisher;
     }
 
-    @Column( length = 100000 )
+    @Column(length = 100000)
     public String getStoryLine() {
         return storyLine;
     }
@@ -80,7 +80,7 @@ public class Game extends BaseEntity {
         this.storyLine = storyLine;
     }
 
-    @Column( length = 100000 )
+    @Column(length = 100000)
     public String getSummary() {
         return summary;
     }
@@ -109,7 +109,7 @@ public class Game extends BaseEntity {
     }
 
     @NotNull
-    @ManyToMany(fetch = FetchType.EAGER) //fetch = FetchType.EAGER
+    @ManyToMany
     public Set<Genre> getGenres() {
         return genres;
     }
@@ -119,7 +119,7 @@ public class Game extends BaseEntity {
     }
 
     @NotNull
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     public Set<GameMode> getGameModes() {
         return gameModes;
     }

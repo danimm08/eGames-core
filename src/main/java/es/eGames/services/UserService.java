@@ -5,7 +5,7 @@ import es.eGames.forms.UserProfileForm;
 import es.eGames.model.User;
 import es.eGames.model.UserAccount;
 import es.eGames.repositories.UserRepository;
-import es.eGames.security.UserDetailsService;
+import es.eGames.security.services.UserDetailsService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
