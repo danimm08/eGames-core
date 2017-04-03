@@ -47,7 +47,6 @@ public class PersonalGameService {
         List<PersonalGame> personalGameList;
         Assert.notNull(gameId);
         Assert.notNull(orderBy);
-        System.out.println(orderBy);
 
         if (orderBy.equals("reputation")) {
             personalGameList = personalGameRepository.findByGameIdOrderByReputation(gameId);
@@ -173,15 +172,19 @@ public class PersonalGameService {
         return personalGames;
     }
 
-    public PersonalGame save(PersonalGame personalGame) {
+    public PersonalGame savePersonalGameForm(PersonalGameForm personalGameForm) {
         User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
-        personalGame.setUser(u);
-        personalGame.setNumberOfViews(0);
-        PersonalGame pg = personalGameRepository.save(personalGame);
+        PersonalGame pg = new PersonalGame();
+        pg.setDescription(personalGameForm.getDescription());
+        pg.setGame(personalGameForm.getGame());
+        pg.setType(personalGameForm.getType());
+        pg.setUser(u);
+        pg.setNumberOfViews(0);
+        personalGameRepository.save(pg);
         return pg;
     }
 
-    public PersonalGame simpleSave(PersonalGame personalGame) {
+    public PersonalGame save(PersonalGame personalGame) {
         return personalGameRepository.save(personalGame);
     }
 
@@ -224,8 +227,10 @@ public class PersonalGameService {
     }
 
     public void delete(int personalGameId) {
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         PersonalGame personalGame = personalGameRepository.findOne(personalGameId);
-        Assert.isTrue(personalGame.getExchange() == null, "No se puede eliminar un juego que esté involucrado en un intercambio");
+        Assert.isTrue(personalGame.getExchange() == null, "You can not delete a game that is involved in an exchange");
+        Assert.isTrue(principal.equals(personalGame.getUser()), "You are not authorized to perform this operation");
 
         Set<Image> images = personalGame.getImages();
         try {

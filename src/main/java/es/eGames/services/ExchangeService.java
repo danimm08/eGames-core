@@ -89,13 +89,13 @@ public class ExchangeService {
             PersonalGame pg = personalGameService.findById(Integer.toString(personalGame.getId()));
             Assert.isTrue(pg.getExchange() == null, "This personal game is not available to exchange it");
             pg.setExchange(res);
-            personalGameService.simpleSave(pg);
+            personalGameService.save(pg);
         });
         ef.getPersonalGamesUser2().forEach(personalGame -> {
             PersonalGame pg = personalGameService.findById(Integer.toString(personalGame.getId()));
             Assert.isTrue(pg.getExchange() == null, "This personal game is not available to exchange it");
             pg.setExchange(res);
-            personalGameService.simpleSave(pg);
+            personalGameService.save(pg);
         });
 
         return res;
@@ -176,7 +176,7 @@ public class ExchangeService {
         List<PersonalGame> personalGameList = personalGameService.findAllPersonalGameByExchange(exchangeId);
         personalGameList.forEach(personalGame -> {
             personalGame.setExchange(null);
-            personalGameService.simpleSave(personalGame);
+            personalGameService.save(personalGame);
         });
 
 
@@ -184,14 +184,14 @@ public class ExchangeService {
             PersonalGame pg = personalGameService.findById(Integer.toString(personalGame.getId()));
             Assert.isTrue(pg.getExchange() == null, "This personal game is not available to exchange it");
             pg.setExchange(res);
-            personalGameService.simpleSave(pg);
+            personalGameService.save(pg);
         });
 
         ef.getPersonalGamesUser2().forEach(personalGame -> {
             PersonalGame pg = personalGameService.findById(Integer.toString(personalGame.getId()));
             Assert.isTrue(pg.getExchange() == null, "This personal game is not available to exchange it");
             pg.setExchange(res);
-            personalGameService.simpleSave(pg);
+            personalGameService.save(pg);
         });
 
         return res;

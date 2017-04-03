@@ -74,11 +74,11 @@ public class ImageService {
         String rootPath = env.getProperty("es.eGames.images.rootPath");
         String fullFileName = rootPath + "/" + fileName;
 
-        if(fileName.contains("personalGames")) {
+        if (fileName.contains("personalGames")) {
             Image image = imageRepository.findByPathUrl(fileName);
             Assert.isTrue(image.getPersonalGame().getUser().equals(principal), "You are not authorized to perform this operation");
             imageRepository.delete(image.getId());
-        }else{
+        } else {
             Assert.isTrue(principal.getProfilePicture().equals(fileName));
             principal.setProfilePicture(null);
             userService.save(principal);
@@ -125,14 +125,15 @@ public class ImageService {
 
     public void savePersonalGamePicture(MultipartFile image, String personalGameId) {
         try {
+            User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
             Assert.notNull(personalGameId);
             PersonalGame personalGame = personalGameService.findById(personalGameId);
 
-            String username = UserDetailsService.getPrincipal().getUsername();
-            Assert.notNull(username, "You must be logged in");
+
+            Assert.isTrue(principal.equals(personalGame.getUser()), "You are not authorized to perform this operation");
 
             String rootPath = env.getProperty("es.eGames.images.rootPath");
-            String personalGamePicturePath = "/" + username + env.getProperty("es.eGames.user.personalGamePicturePath") + "/" + personalGame.getGame().getTitle();
+            String personalGamePicturePath = "/" + principal.getUserAccount().getUsername() + env.getProperty("es.eGames.user.personalGamePicturePath") + "/" + personalGame.getGame().getTitle();
             String fullPath = rootPath + personalGamePicturePath;
 
             File directory = new File(fullPath);

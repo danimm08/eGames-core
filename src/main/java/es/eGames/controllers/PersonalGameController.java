@@ -32,14 +32,15 @@ public class PersonalGameController {
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<Object> save(@Valid @RequestBody PersonalGame personalGame, BindingResult bindingResult) {
+    public ResponseEntity<Object> save(@Valid @RequestBody PersonalGameForm personalGame, BindingResult bindingResult) {
 
         ResponseEntity responseEntity;
         if (bindingResult.hasErrors()) {
             responseEntity = ResponseEntity.badRequest().body(HandleValidationErrors.mapErros(bindingResult, personalGame));
 
         } else {
-            responseEntity = ResponseEntity.ok().body(personalGameService.save(personalGame));
+            personalGameService.savePersonalGameForm(personalGame);
+            responseEntity = ResponseEntity.ok().build();
         }
         return responseEntity;
     }
