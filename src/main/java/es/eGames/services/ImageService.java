@@ -69,12 +69,20 @@ public class ImageService {
     }
 
     public void deletePicture(String fileName) throws Exception {
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+
         String rootPath = env.getProperty("es.eGames.images.rootPath");
         String fullFileName = rootPath + "/" + fileName;
 
-        Image image = imageRepository.findByPathUrl(fileName);
-        imageRepository.delete(image.getId());
-
+        if(fileName.contains("personalGames")) {
+            Image image = imageRepository.findByPathUrl(fileName);
+            Assert.isTrue(image.getPersonalGame().getUser().equals(principal), "You are not authorized to perform this operation");
+            imageRepository.delete(image.getId());
+        }else{
+            Assert.isTrue(principal.getProfilePicture().equals(fileName));
+            principal.setProfilePicture(null);
+            userService.save(principal);
+        }
         File file = new File(fullFileName);
         file.delete();
     }

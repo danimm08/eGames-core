@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by daniel on 31/03/17.
@@ -26,7 +27,7 @@ public class MessageController {
         ResponseEntity responseEntity;
 
         try {
-            List<String> chats = messageService.getChats();
+            Set<String> chats = messageService.getChats();
             responseEntity = ResponseEntity.ok().body(chats);
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());

@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by daniel on 31/03/17.
@@ -30,8 +28,8 @@ public class MessageService {
         super();
     }
 
-    public List<String> getChats() {
-        List<String> chats = new ArrayList<>();
+    public Set<String> getChats() {
+        Set<String> chats = new HashSet<>();
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         List<Message> messages = messageRepository.findChats(principal);
         for (Message m : messages) {
