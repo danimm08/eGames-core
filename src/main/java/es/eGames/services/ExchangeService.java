@@ -215,7 +215,7 @@ public class ExchangeService {
         return res;
     }
 
-    private List<User> usersInExchange(int exchangeId) {
+    public List<User> usersInExchange(int exchangeId) {
         List<User> res = new ArrayList<>();
         Exchange exchange = exchangeRepository.findOne(exchangeId);
         Assert.notNull(exchange);
@@ -263,5 +263,9 @@ public class ExchangeService {
             myDetailsOfExchangesForm.add(detailsOfExchangeForm);
         }
         return myDetailsOfExchangesForm;
+    }
+
+    public Exchange findById(Integer exchangeId) {
+        return exchangeRepository.findOne(exchangeId);
     }
 }

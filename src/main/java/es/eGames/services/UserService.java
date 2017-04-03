@@ -2,6 +2,7 @@ package es.eGames.services;
 
 import es.eGames.forms.RegistrationForm;
 import es.eGames.forms.UserProfileForm;
+import es.eGames.model.Qualification;
 import es.eGames.model.User;
 import es.eGames.model.UserAccount;
 import es.eGames.repositories.UserRepository;
@@ -25,6 +26,9 @@ public class UserService {
 
     @Autowired
     private UserAccountService userAccountService;
+
+    @Autowired
+    private QualificationService qualificationService;
 
     public UserService() {
         super();
@@ -110,6 +114,12 @@ public class UserService {
 
     public User save(User u) {
         return userRepository.save(u);
+    }
+
+    public Double calculateReputation(User user) {
+        List<Qualification> qualifications = qualificationService.findByUserId(user.getId());
+        Double reputation = qualifications.stream().mapToDouble(Qualification::getMark).average().getAsDouble();
+        return reputation;
     }
 }
 

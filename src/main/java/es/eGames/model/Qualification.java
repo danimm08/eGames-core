@@ -1,5 +1,6 @@
 package es.eGames.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
@@ -8,8 +9,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import java.util.Date;
 
 /**
  * Created by daniel on 4/02/17.
@@ -19,7 +18,7 @@ import java.util.Date;
 public class Qualification extends BaseEntity {
 
     private String text;
-    private Integer mark;
+    private Double mark;
 
     private Exchange exchange;
     private User user;
@@ -38,16 +37,17 @@ public class Qualification extends BaseEntity {
     }
 
     @Range(min=0, max=10)
-    public Integer getMark() {
+    public Double getMark() {
         return mark;
     }
 
-    public void setMark(Integer mark) {
+    public void setMark(Double mark) {
         this.mark = mark;
     }
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonIgnore
     public Exchange getExchange() {
         return exchange;
     }
