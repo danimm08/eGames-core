@@ -3,6 +3,8 @@ package es.eGames.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import es.eGames.views.View;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -109,6 +111,7 @@ public class Game extends BaseEntity {
     }
 
     @NotNull
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     public Set<Genre> getGenres() {
         return genres;
@@ -119,6 +122,7 @@ public class Game extends BaseEntity {
     }
 
     @NotNull
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     public Set<GameMode> getGameModes() {
         return gameModes;

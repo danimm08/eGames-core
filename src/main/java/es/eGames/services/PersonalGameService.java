@@ -119,7 +119,7 @@ public class PersonalGameService {
             List<DistanceMatrixElement> elements = Arrays.asList(r.elements);
             for (DistanceMatrixElement e : elements) {
                 Assert.isTrue(e.status.equals(DistanceMatrixElementStatus.OK), "Ha habido algún error en el cálculo de las distancias");
-                Double distance = new Double(e.distance.humanReadable.replace(".", "").split(" ")[0]);
+                Double distance = new Double(e.distance.humanReadable.replace(",", ".").split(" ")[0]);
 
                 PersonalGame personalGame = personalGameIntegerMap.get(elements.indexOf(e));
                 personalGame.setDistance(distance);

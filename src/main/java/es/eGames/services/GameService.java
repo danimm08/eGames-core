@@ -6,6 +6,8 @@ import es.eGames.model.PersonalGame;
 import es.eGames.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -36,19 +38,20 @@ public class GameService {
     @Autowired
     private Environment env;
 
-    public Collection<Game> gameList(String filterBy, String param) throws Exception {
-        System.out.println(filterBy);
+    public Collection<Game> gameList(String filterBy, String param, Integer page) throws Exception {
         Collection<Game> games;
+        Pageable pageable = new PageRequest(page, 50);
+
         if ((filterBy.equals("") || filterBy.equals("genre") || filterBy.equals("platform") || filterBy.equals("firstReleaseDate"))) {
 
             if (filterBy.equals("genre")) {
-                games = gameRepository.findByGenreName(param);
+                games = gameRepository.findByGenreName(param, pageable).getContent();
             } else if (filterBy.equals("platform")) {
-                games = gameRepository.findByPlatformName(param);
+                games = gameRepository.findByPlatformName(param, pageable).getContent();
             } else if (filterBy.equals("firstReleaseDate")) {
-                games = gameRepository.findByFirstReleaseDate(new Integer(param));
+                games = gameRepository.findByFirstReleaseDate(new Integer(param), pageable).getContent();
             } else {
-                games = gameRepository.findAll();
+                games = gameRepository.findAll(pageable).getContent();
             }
         } else {
             games = null;
@@ -118,7 +121,7 @@ public class GameService {
     }
 
 
-    public List<GameDetailsForm> listGames(int gameId, String type) {
+    public List<GameDetailsForm> listGames(Integer gameId, String type) {
         List<GameDetailsForm> result;
         if (type.equals("recommend")) {
             result = listRecommendedGames(gameId);

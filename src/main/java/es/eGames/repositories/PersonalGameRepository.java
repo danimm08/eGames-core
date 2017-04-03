@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface PersonalGameRepository extends JpaRepository<PersonalGame, Integer> {
 
-    @Query("select pg from PersonalGame pg where pg.game.id = ?1 order by pg.user.reputation")
+    @Query("select pg from PersonalGame pg where pg.game.id = ?1 order by pg.user.reputation desc")
     List<PersonalGame> findByGameIdOrderByReputation(int gameId);
 
     @Query("select pg from PersonalGame pg where pg.game.id = ?1 order by pg.type")

@@ -41,7 +41,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/customList", method = RequestMethod.GET)
-    public ResponseEntity<List> customList(@RequestParam int gameId, @RequestParam(required = true) String type) {
+    public ResponseEntity<List> customList(@RequestParam(required = false) Integer gameId, @RequestParam(required = true) String type) {
         ResponseEntity responseEntity;
 
         List<GameDetailsForm> personalGameList;
@@ -56,11 +56,11 @@ public class GameController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity<List<Game>> listVideogames(@RequestParam(required = false, defaultValue = "") String filterBy, @RequestParam(required = false, defaultValue = "") String param) throws Exception {
+    public ResponseEntity<List<Game>> listVideogames(@RequestParam(required = false, defaultValue = "") String filterBy, @RequestParam(required = false, defaultValue = "") String param, @RequestParam(defaultValue = "1") Integer page) throws Exception {
 
         ResponseEntity responseEntity;
         Collection<Game> games;
-        games = gameService.gameList(filterBy,param);
+        games = gameService.gameList(filterBy,param, page);
 
         if (games != null) {
             responseEntity = ResponseEntity.ok().body(games);
