@@ -77,13 +77,13 @@ public class UserService {
     public void editProfile(UserProfileForm userProfileForm) {
         User principal = userRepository.findByUsername(UserDetailsService.getPrincipal().getUsername());
 
-        if (!userProfileForm.getName().isEmpty())
+        if (userProfileForm.getName() != null && !userProfileForm.getName().isEmpty())
             principal.setName(userProfileForm.getName());
 
-        if (!userProfileForm.getSurname().isEmpty())
+        if (userProfileForm.getSurname() != null && !userProfileForm.getSurname().isEmpty())
             principal.setSurname(userProfileForm.getSurname());
 
-        if (!userProfileForm.getAddress().equals(principal.getAddress()))
+        if (userProfileForm.getAddress() != null && !userProfileForm.getAddress().equals(principal.getAddress()))
             principal.setAddress(userProfileForm.getAddress());
 
         update(principal);
@@ -96,9 +96,9 @@ public class UserService {
         return users;
     }
 
-    public void followOrUnfollow(String username) {
+    public void followOrUnfollow(Integer userId) {
         User principal = userRepository.findByUsername(UserDetailsService.getPrincipal().getUsername());
-        User toFollow = userRepository.findByUsername(username);
+        User toFollow = userRepository.findOne(userId);
         if (!principal.getFollowees().contains(toFollow)) {
             principal.getFollowees().add(toFollow);
             toFollow.getFollowers().add(principal);

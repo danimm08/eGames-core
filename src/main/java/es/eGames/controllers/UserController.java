@@ -90,11 +90,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/follow", method = RequestMethod.GET)
-    public ResponseEntity followOrUnfollow(@RequestParam String username) {
+    public ResponseEntity followOrUnfollow(@RequestParam Integer userId) {
         ResponseEntity responseEntity;
 
         try {
-            userService.followOrUnfollow(username);
+            userService.followOrUnfollow(userId);
             responseEntity = ResponseEntity.ok().build();
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
