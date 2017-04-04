@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class QualificationService {
     public void save(QualificationForm qualificationForm, Integer exchangeId) {
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         Exchange exchange = exchangeService.findById(exchangeId);
-        List<User> usersInExchange = exchangeService.usersInExchange(exchangeId);
+        List<User> usersInExchange = new ArrayList(exchangeService.usersInExchange(exchangeId));
         Qualification auxQualification = qualificationRepository.findByUserIdAndExchangeId(principal.getId(), exchangeId);
 
         Assert.isNull(auxQualification);

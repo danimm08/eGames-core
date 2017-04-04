@@ -43,11 +43,15 @@ public class ExchangeController {
     public ResponseEntity<Object> save(@Valid @RequestBody ExchangeForm exchangeForm, BindingResult bindingResult) {
 
         ResponseEntity responseEntity;
-        if (bindingResult.hasErrors()) {
-            responseEntity = ResponseEntity.badRequest().body(HandleValidationErrors.mapErros(bindingResult, exchangeForm));
+        try {
+            if (bindingResult.hasErrors()) {
+                responseEntity = ResponseEntity.badRequest().body(HandleValidationErrors.mapErros(bindingResult, exchangeForm));
 
-        } else {
-            responseEntity = ResponseEntity.ok().body(exchangeService.save(exchangeForm));
+            } else {
+                responseEntity = ResponseEntity.ok().body(exchangeService.save(exchangeForm));
+            }
+        } catch (Exception e) {
+            responseEntity = ResponseEntity.badRequest().body(e.getMessage());
         }
         return responseEntity;
     }
@@ -95,11 +99,16 @@ public class ExchangeController {
     public ResponseEntity<Object> negotiate(@RequestParam int exchangeId, @Valid @RequestBody ExchangeForm exchangeForm, BindingResult bindingResult) {
 
         ResponseEntity responseEntity;
-        if (bindingResult.hasErrors()) {
-            responseEntity = ResponseEntity.badRequest().body(HandleValidationErrors.mapErros(bindingResult, exchangeForm));
+        try {
+            if (bindingResult.hasErrors()) {
+                responseEntity = ResponseEntity.badRequest().body(HandleValidationErrors.mapErros(bindingResult, exchangeForm));
 
-        } else {
-            responseEntity = ResponseEntity.ok().body(exchangeService.negotiate(exchangeForm, exchangeId));
+            } else {
+                responseEntity = ResponseEntity.ok().body(exchangeService.negotiate(exchangeForm, exchangeId));
+            }
+        } catch (Exception e) {
+            responseEntity = ResponseEntity.badRequest().body(e.getMessage());
+            e.printStackTrace();
         }
         return responseEntity;
     }

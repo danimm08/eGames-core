@@ -54,20 +54,20 @@ public class ExchangeService {
 
     public Exchange save(ExchangeForm ef) {
 
-        User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
-        Assert.notNull(u, "An error has occurred. Please, make sure you are logged in");
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
 
         Date now = new Date();
 
         Exchange exchange = new Exchange();
         exchange.setWayExchange(ef.getWayExchange());
         exchange.setType(ef.getType());
-        exchange.setUser(u);
+        exchange.setUser(principal);
         exchange.setCreationDate(now);
         exchange.setEventDate(null);
         exchange.setLastUpdateDate(now);
         exchange.setStatus(null);
         exchange.setNumberOfAttemps(1);
+        exchange.setLastModifier(principal);
 
 
         Exchange res = exchangeRepository.save(exchange);
@@ -76,24 +76,25 @@ public class ExchangeService {
             Note note = ef.getNotes().get(ef.getNotes().size() - 1);
             note.setDate(now);
             note.setExchange(res);
-            note.setUser(u);
+            note.setUser(principal);
             noteService.save(note);
         }
 
         Assert.isTrue(ef.getPersonalGamesUser2().size() > 0, "A game has to be selected to exchange");
-        if (!exchange.getUser().equals(u)) {
-            Assert.isTrue(ef.getPersonalGamesUser1().size() > 0, "A game has to be selected to exchange");
-        }
 
         ef.getPersonalGamesUser1().forEach(personalGame -> {
             PersonalGame pg = personalGameService.findById(Integer.toString(personalGame.getId()));
             Assert.isTrue(pg.getExchange() == null, "This personal game is not available to exchange it");
+            Assert.isTrue(pg.getUser().equals(principal), "This personal game does not belong to you");
             pg.setExchange(res);
             personalGameService.save(pg);
         });
+
+        User u2 = personalGameService.findById(Integer.toString(ef.getPersonalGamesUser2().get(0).getId())).getUser();
         ef.getPersonalGamesUser2().forEach(personalGame -> {
             PersonalGame pg = personalGameService.findById(Integer.toString(personalGame.getId()));
             Assert.isTrue(pg.getExchange() == null, "This personal game is not available to exchange it");
+            Assert.isTrue(pg.getUser().equals(u2), "All games must to belong to same user");
             pg.setExchange(res);
             personalGameService.save(pg);
         });
@@ -108,20 +109,21 @@ public class ExchangeService {
         Assert.isNull(exchange.getStatus(), "It's not possible change the status of this exchange");
         Assert.notNull(exchange);
 
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+
+        List<User> usersInExchange = new ArrayList<>(usersInExchange(exchangeId));
+        Assert.isTrue(usersInExchange.contains(principal), "You are not authorized to perform this operation");
+
         List<PersonalGame> personalGamesUser1 = extractPersonalGamesByExchange(exchangeId).get("user1");
         List<PersonalGame> personalGamesUser2 = extractPersonalGamesByExchange(exchangeId).get("user2");
 
         User u1 = personalGamesUser1.get(0).getUser();
         User u2 = personalGamesUser2.get(0).getUser();
 
-        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
-
-        List<User> usersInExchange = usersInExchange(exchangeId);
-        Assert.isTrue(usersInExchange.contains(principal), "You are not authorized to perform this operation");
-
         if (isAccept) {
             Assert.isTrue(personalGamesUser1.size() > 0);
             Assert.isTrue(personalGamesUser2.size() > 0);
+            Assert.isTrue(!exchange.getLastModifier().equals(principal), "You must wait the response of the other player");
 
             exchange.setStatus(true);
 
@@ -150,7 +152,7 @@ public class ExchangeService {
     public Exchange negotiate(ExchangeForm ef, int exchangeId) {
 
         Exchange exchange = exchangeRepository.findOne(exchangeId);
-        User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         Assert.notNull(exchange);
 
         Date now = new Date();
@@ -158,6 +160,7 @@ public class ExchangeService {
         exchange.setWayExchange(ef.getWayExchange());
         exchange.setType(ef.getType());
         exchange.setLastUpdateDate(now);
+        exchange.setLastModifier(principal);
         exchange.setNumberOfAttemps(exchange.getNumberOfAttemps() + 1);
 
         Exchange res = exchangeRepository.save(exchange);
@@ -169,7 +172,7 @@ public class ExchangeService {
             Note note = ef.getNotes().get(ef.getNotes().size() - 1);
             note.setDate(now);
             note.setExchange(res);
-            note.setUser(u);
+            note.setUser(principal);
             noteService.save(note);
         }
 
@@ -183,13 +186,19 @@ public class ExchangeService {
         ef.getPersonalGamesUser1().forEach(personalGame -> {
             PersonalGame pg = personalGameService.findById(Integer.toString(personalGame.getId()));
             Assert.isTrue(pg.getExchange() == null, "This personal game is not available to exchange it");
+            Assert.isTrue(pg.getUser().equals(exchange.getUser()), "This personal game does not belong to you");
             pg.setExchange(res);
             personalGameService.save(pg);
         });
 
+        User u2 = personalGameService.findById(Integer.toString(ef.getPersonalGamesUser2().get(0).getId())).getUser();
+        Set<User> usersInExchange = usersInExchange(personalGameList);
+        Assert.isTrue(usersInExchange.contains(u2), "You are not authorized to perform this operation");
+
         ef.getPersonalGamesUser2().forEach(personalGame -> {
             PersonalGame pg = personalGameService.findById(Integer.toString(personalGame.getId()));
             Assert.isTrue(pg.getExchange() == null, "This personal game is not available to exchange it");
+            Assert.isTrue(pg.getUser().equals(u2), "All games must to belong to same user");
             pg.setExchange(res);
             personalGameService.save(pg);
         });
@@ -215,23 +224,23 @@ public class ExchangeService {
         return res;
     }
 
-    public List<User> usersInExchange(int exchangeId) {
-        List<User> res = new ArrayList<>();
-        Exchange exchange = exchangeRepository.findOne(exchangeId);
-        Assert.notNull(exchange);
-        User u1 = exchange.getUser();
-        PersonalGame auxPersonalGame = personalGameService.findAllPersonalGameByExchange(exchangeId)
-                .stream().filter(personalGame -> personalGame.getExchange().getId() == exchangeId && personalGame.getUser().getId() != u1.getId()).findAny().get();
-        User u2 = auxPersonalGame.getUser();
-        res.add(u1);
-        res.add(u2);
+    public Set<User> usersInExchange(int exchangeId) {
+        Set<User> res = new HashSet<>();
+        List<PersonalGame> personalGames = personalGameService.findAllPersonalGameByExchange(exchangeId);
+        personalGames.stream().forEach(personalGame -> res.add(personalGame.getUser()));
+        return res;
+    }
 
+
+    public Set<User> usersInExchange(List<PersonalGame> personalGames) {
+        Set<User> res = new HashSet<>();
+        personalGames.stream().forEach(personalGame -> res.add(personalGame.getUser()));
         return res;
     }
 
     public ExchangeForm getExchangeInfo(int exchangeId) {
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
-        List<User> usersInExchange = usersInExchange(exchangeId);
+        List<User> usersInExchange = new ArrayList<>(usersInExchange(exchangeId));
         Assert.isTrue(usersInExchange.contains(principal), "You are not authorized to perform this operation");
 
         Map<String, List<PersonalGame>> map = extractPersonalGamesByExchange(exchangeId);

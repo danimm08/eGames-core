@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Access(AccessType.PROPERTY)
-public class Exchange extends BaseEntity{
+public class Exchange extends BaseEntity {
 
     private Date creationDate;
     private Date lastUpdateDate;
@@ -22,7 +22,7 @@ public class Exchange extends BaseEntity{
     private String wayExchange;
 
     private User user;
-
+    private User lastModifier;
 
     public Exchange() {
         super();
@@ -100,5 +100,15 @@ public class Exchange extends BaseEntity{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @NotNull
+    @ManyToOne(optional = false)
+    public User getLastModifier() {
+        return lastModifier;
+    }
+
+    public void setLastModifier(User lastModifier) {
+        this.lastModifier = lastModifier;
     }
 }
