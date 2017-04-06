@@ -40,8 +40,15 @@ public class ResourceServer {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/game/**").authenticated();
-
+                    .antMatchers("/registration/**").permitAll()
+                    .antMatchers("/exchange/**").authenticated()
+                    .antMatchers("/game/**").authenticated()
+                    .antMatchers("/image/**").authenticated()
+                    .antMatchers("/message/**").authenticated()
+                    .antMatchers("/personalgame/**").authenticated()
+                    .antMatchers("/qualification/**").authenticated()
+                    .antMatchers("/useraccount/**").authenticated()
+                    .antMatchers("/user/**").authenticated();
 
         }
 
