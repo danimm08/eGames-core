@@ -40,7 +40,6 @@ public class ResourceServer {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/registration/**").permitAll()
                     .antMatchers("/exchange/**").authenticated()
                     .antMatchers("/game/**").authenticated()
                     .antMatchers("/image/**").authenticated()
