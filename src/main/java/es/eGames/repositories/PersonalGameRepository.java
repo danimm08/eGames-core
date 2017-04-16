@@ -14,13 +14,14 @@ import java.util.List;
 @Repository
 public interface PersonalGameRepository extends JpaRepository<PersonalGame, Integer> {
 
-    @Query("select pg from PersonalGame pg where pg.game.id = ?1 order by pg.user.reputation desc")
-    List<PersonalGame> findByGameIdOrderByReputation(int gameId);
+    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 order by pg.user.reputation desc")
+    List<PersonalGame> findByGameIdOrderByReputation(int gameId, int userId);
 
-    @Query("select pg from PersonalGame pg where pg.game.id = ?1 order by pg.type")
-    List<PersonalGame> findByGameIdOrderByType(int gameId);
+    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 order by pg.type")
+    List<PersonalGame> findByGameIdOrderByType(int gameId, int userId);
 
-    List<PersonalGame> findByGameId(int gameId);
+    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2")
+    List<PersonalGame> findByGameId(int gameId, int userId);
 
     @Query("select pg from PersonalGame pg where pg.user.id = ?1")
     List<PersonalGame> findByUserId(int userId);
@@ -37,10 +38,13 @@ public interface PersonalGameRepository extends JpaRepository<PersonalGame, Inte
     @Query("select pg from PersonalGame pg where pg.user.userAccount.username not like ?1")
     List<PersonalGame> findAllExceptOfPrincipal(String username);
 
+    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 and pg.user = ANY (select fw from User u join u.followees fw where u.id = ?2 )")
+    List<PersonalGame> findPersonalGamesOfFolloweesByGameId(int gameId, int principalId);
+
     @Query("select pg from PersonalGame pg where pg.user = ANY (select fw from User u join u.followees fw where u.id = ?1 )")
     List<PersonalGame> findPersonalGamesOfFollowees(int principalId);
 
     @Query("select g from PersonalGame g where g.description like %?1% or g.game.title like %?1%")
     List<PersonalGame> search(String toSearch);
-    
+
 }

@@ -1,8 +1,8 @@
 #Messages
-INSERT INTO eGames.message (version, moment, status, text, recipient_id, sender_id) VALUES (0, '2017-01-08 23:34:00', false, 'Hola. No estoy de acuerdo con este intercambio. Si te parece este otro que te voy a mandar, firmarmos sin ningún problema', 5, 1);
-INSERT INTO eGames.message (version, moment, status, text, recipient_id, sender_id) VALUES (0, '2017-01-08 23:59:00', false, 'Venga vale, a mi me da igual el juego que sea, quiero quitarme este de encima.', 5, 1);
-INSERT INTO eGames.message (version, moment, status, text, recipient_id, sender_id) VALUES (0, '2017-02-13 10:34:00', false, 'Hola. No tendrás por casualidad un CoD para que podamos hacer un intercambio?', 2, 1);
-INSERT INTO eGames.message (version, moment, status, text, recipient_id, sender_id) VALUES (0, '2017-02-13 10:45:00', false, 'Si lo tengo, pero no lo quiero intercambiar.', 1, 2);
-INSERT INTO eGames.message (version, moment, status, text, recipient_id, sender_id) VALUES (0, '2017-02-13 11:56:00', false, '¿Por qué tío? Un intercambio temporal, luego lo volvemos a intercambiar. Soy fiable. Solo quiero jugar un poco al CoD, luego me acabo aburriendo.', 2, 1);
-INSERT INTO eGames.message (version, moment, status, text, recipient_id, sender_id) VALUES (0, '2017-02-13 14:12:00', false, '¿Tienes algún juego interesane que no hayas puesto en aplicación? si hay alguno que me guste, entonces a lo mejor, pero solo unas semanas.', 1, 2);
-INSERT INTO eGames.message (version, moment, status, text, recipient_id, sender_id) VALUES (0, '2017-02-13 15:56:00', false, 'Sí. Los subo todos ahora a la aplicación, y si te gusta alguno mandame un intercambio y negociamos por ahí.', 2, 1);
+INSERT INTO message (moment, status, text, recipient_id, sender_id) VALUES ("2017-01-08 23:34",false,"Hola. No estoy de acuerdo con este intercambio. Si te parece este otro que te voy a mandar, firmarmos sin ningún problema", 5, 1);
+INSERT INTO message (moment, status, text, recipient_id, sender_id) VALUES ("2017-01-08 23:59",false,"Venga vale, a mi me da igual el juego que sea, quiero quitarme este de encima.", 5, 1);
+INSERT INTO message (moment, status, text, recipient_id, sender_id) VALUES ("2017-02-13 10:34",false,"Hola. No tendrás por casualidad un CoD para que podamos hacer un intercambio?", 2, 1);
+INSERT INTO message (moment, status, text, recipient_id, sender_id) VALUES ("2017-02-13 10:45",false,"Si lo tengo, pero no lo quiero intercambiar.", 1, 2);
+INSERT INTO message (moment, status, text, recipient_id, sender_id) VALUES ("2017-02-13 11:56",false,"¿Por qué tío? Un intercambio temporal, luego lo volvemos a intercambiar. Soy fiable. Solo quiero jugar un poco al CoD, luego me acabo aburriendo.", 2, 1);
+INSERT INTO message (moment, status, text, recipient_id, sender_id) VALUES ("2017-02-13 14:12",false,"¿Tienes algún juego interesane que no hayas puesto en aplicación? si hay alguno que me guste, entonces a lo mejor, pero solo unas semanas.", 1, 2);
+INSERT INTO message (moment, status, text, recipient_id, sender_id) VALUES ("2017-02-13 15:56",false,"Sí. Los subo todos ahora a la aplicación, y si te gusta alguno mandame un intercambio y negociamos por ahí.", 2, 1);

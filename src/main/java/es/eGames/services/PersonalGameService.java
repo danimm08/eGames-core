@@ -48,20 +48,22 @@ public class PersonalGameService {
         Assert.notNull(gameId);
         Assert.notNull(orderBy);
 
+        int userId = userService.findByUsername(UserDetailsService.getPrincipal().getUsername()).getId();
+
         if (orderBy.equals("reputation")) {
-            personalGameList = personalGameRepository.findByGameIdOrderByReputation(gameId);
+            personalGameList = personalGameRepository.findByGameIdOrderByReputation(gameId, userId);
         } else if (orderBy.equals("type")) {
-            personalGameList = personalGameRepository.findByGameIdOrderByType(gameId);
-        } else if (orderBy.equals("folowees")) {
-            personalGameList = findPersonalGamesOfFollowees();
+            personalGameList = personalGameRepository.findByGameIdOrderByType(gameId, userId);
+        } else if (orderBy.equals("followees")) {
+            personalGameList = findPersonalGamesOfFolloweesByGameId(gameId, userId);
         } else if (orderBy.equals("distance")) {
-            personalGameList = personalGameRepository.findByGameId(gameId);
+            personalGameList = personalGameRepository.findByGameId(gameId, userId);
             List<PersonalGame> personalGameIntegerMap = calculateNearestPersonalGames(personalGameList);
             List<PersonalGame> personalGamesWithDistance = calculateDistances(personalGameIntegerMap);
             personalGamesWithDistance.sort(Comparator.comparing(PersonalGame::getDistance));
-            return personalGamesWithDistance;
+            personalGameList = personalGamesWithDistance;
         } else {
-            personalGameList = personalGameRepository.findByGameId(gameId);
+            personalGameList = personalGameRepository.findByGameId(gameId, userId);
         }
 
         return personalGameList;
@@ -200,13 +202,18 @@ public class PersonalGameService {
         return personalGames;
     }
 
+    public List<PersonalGame> findPersonalGamesOfFolloweesByGameId(int gameId, int userId) {
+        List<PersonalGame> personalGames;
+        personalGames = personalGameRepository.findPersonalGamesOfFolloweesByGameId(gameId, userId);
+        return personalGames;
+    }
+
     public List<PersonalGame> findPersonalGamesOfFollowees() {
         List<PersonalGame> personalGames;
         int userId = userService.findByUsername(UserDetailsService.getPrincipal().getUsername()).getId();
         personalGames = personalGameRepository.findPersonalGamesOfFollowees(userId);
         return personalGames;
     }
-
 
     public void editPersonalGame(int personalGameId, PersonalGameForm personalGameForm) {
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
@@ -247,5 +254,9 @@ public class PersonalGameService {
         List<PersonalGame> games;
         games = personalGameRepository.search(toSearch);
         return games;
+    }
+
+    public List<PersonalGame> findByUserId(Integer userId) {
+        return personalGameRepository.findByUserId(userId);
     }
 }

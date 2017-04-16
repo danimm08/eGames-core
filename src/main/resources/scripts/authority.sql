@@ -1,2 +1,2 @@
 #Authority
-INSERT INTO eGames.authority (version, authority) VALUES (0, 'ROLE_USER');
+INSERT INTO `authority` VALUES (1,0,'ROLE_USER');

@@ -33,6 +33,7 @@ public class CustomPersonalGameSerializer extends JsonSerializer<List<PersonalGa
             jgen.writeNumberField("numberOfViews", pg.getNumberOfViews());
             jgen.writeStringField("type", String.valueOf(pg.getType()));
             jgen.writeStringField("distance", String.valueOf(pg.getDistance()));
+            jgen.writeObjectField("user",pg.getUser());
             jgen.writeFieldName("images");
             jgen.writeStartArray();
             pg.getImages().forEach(image -> {

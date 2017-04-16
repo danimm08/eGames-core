@@ -3,7 +3,9 @@ package es.eGames.services;
 import es.eGames.forms.GameDetailsForm;
 import es.eGames.model.Game;
 import es.eGames.model.PersonalGame;
+import es.eGames.model.User;
 import es.eGames.repositories.GameRepository;
+import es.eGames.security.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
@@ -17,10 +19,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by daniel on 28/02/17.
@@ -34,6 +33,9 @@ public class GameService {
 
     @Autowired
     private PersonalGameService personalGameService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private Environment env;
@@ -74,15 +76,27 @@ public class GameService {
         return gameDetailsForm;
     }
 
-    public List<GameDetailsForm> listRecommendedGames(int gameId) {
+    public List<GameDetailsForm> listRecommendedGames() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", env.getProperty("es.eGames.recommenderSystem.password"));
         HttpEntity httpEntity = new HttpEntity(headers);
 
-        ResponseEntity<List> request = restTemplate.exchange(env.getProperty("es.eGames.recommenderSystem.url") + gameId, HttpMethod.GET, httpEntity, List.class);
-        List<Integer> listOfGameIDs;
-        listOfGameIDs = request.getBody();
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        List<PersonalGame> myPersonalGames = personalGameService.findByUserId(principal.getId());
+        Random random = new Random();
+        List<Game> selectOfPersonalGames = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            Integer index = random.nextInt(myPersonalGames.size());
+            selectOfPersonalGames.add(myPersonalGames.get(index).getGame());
+        }
+
+        List<Integer> listOfGameIDs = new ArrayList<>();
+        for (Game game : selectOfPersonalGames) {
+            ResponseEntity<List> request = restTemplate.exchange(env.getProperty("es.eGames.recommenderSystem.url") + game.getId(), HttpMethod.GET, httpEntity, List.class);
+            listOfGameIDs.addAll(request.getBody());
+        }
+
         List<GameDetailsForm> res = new ArrayList<>();
         for (Integer id : listOfGameIDs) {
             Game game = gameRepository.findOne(id);
@@ -121,10 +135,10 @@ public class GameService {
     }
 
 
-    public List<GameDetailsForm> listGames(Integer gameId, String type) {
+    public List<GameDetailsForm> listGames(String type) {
         List<GameDetailsForm> result;
         if (type.equals("recommend")) {
-            result = listRecommendedGames(gameId);
+            result = listRecommendedGames();
         } else if (type.equals("followees")) {
             result = listGamesOfFollowees();
         } else if (type.equals("distance")) {

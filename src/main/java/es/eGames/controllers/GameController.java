@@ -4,6 +4,7 @@ import es.eGames.forms.GameDetailsForm;
 import es.eGames.model.Game;
 import es.eGames.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,13 +41,13 @@ public class GameController {
 
     }
 
-    @RequestMapping(value = "/customList", method = RequestMethod.GET)
-    public ResponseEntity<List> customList(@RequestParam(required = false) Integer gameId, @RequestParam(required = true) String type) {
+    @RequestMapping(value = "/customList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List> customList(@RequestParam(required = true) String type) {
         ResponseEntity responseEntity;
 
         List<GameDetailsForm> personalGameList;
         try {
-            personalGameList = gameService.listGames(gameId, type);
+            personalGameList = gameService.listGames(type);
             responseEntity = ResponseEntity.ok().body(personalGameList);
         } catch (Exception oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
@@ -60,7 +61,7 @@ public class GameController {
 
         ResponseEntity responseEntity;
         Collection<Game> games;
-        games = gameService.gameList(filterBy,param, page);
+        games = gameService.gameList(filterBy, param, page);
 
         if (games != null) {
             responseEntity = ResponseEntity.ok().body(games);
