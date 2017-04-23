@@ -96,7 +96,7 @@ public class PersonalGame extends BaseEntity {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonView(View.DetailsOfPersonalGame.class)
+    @JsonView(View.ListPersonalGame.class)
     public User getUser() {
         return user;
     }

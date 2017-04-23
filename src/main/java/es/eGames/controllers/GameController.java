@@ -72,7 +72,7 @@ public class GameController {
         return responseEntity;
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity search(@RequestParam String toSearch) {
 
         ResponseEntity responseEntity;

@@ -120,7 +120,7 @@ public class PersonalGameController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    @JsonView(View.ListPersonalGame.class)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public ResponseEntity search(@RequestParam String toSearch) {
 
         ResponseEntity responseEntity;

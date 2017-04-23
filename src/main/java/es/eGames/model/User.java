@@ -122,7 +122,7 @@ public class User extends BaseEntity {
     @NotNull
     @Valid
     @OneToOne(optional = false)
-    @JsonView(View.DetailsOfPersonalGame.class)
+    @JsonView(View.ListPersonalGame.class)
     public UserAccount getUserAccount() {
         return userAccount;
     }
