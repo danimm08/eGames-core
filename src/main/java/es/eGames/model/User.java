@@ -1,8 +1,6 @@
 package es.eGames.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import es.eGames.serializers.CustomFollowersFolloweesSerializer;
 import es.eGames.views.View;
@@ -22,7 +20,7 @@ import java.util.Collection;
 
 @Entity
 @Access(AccessType.PROPERTY)
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User extends BaseEntity {
 
     private String name;
@@ -41,6 +39,7 @@ public class User extends BaseEntity {
     }
 
     @NotBlank
+    @JsonView(View.DetailsOfPersonalGame.class)
     public String getName() {
         return name;
     }
@@ -50,6 +49,7 @@ public class User extends BaseEntity {
     }
 
     @NotBlank
+    @JsonView(View.DetailsOfPersonalGame.class)
     public String getSurname() {
         return surname;
     }
@@ -79,6 +79,7 @@ public class User extends BaseEntity {
 
     @NotNull
     @Valid
+    @JsonView(View.DetailsOfPersonalGame.class)
     public Address getAddress() {
         return address;
     }
@@ -89,6 +90,7 @@ public class User extends BaseEntity {
 
     @NotNull
     @Range(min=0)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public Integer getnExchanges() {
         return nExchanges;
     }

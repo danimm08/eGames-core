@@ -23,8 +23,6 @@ public class ExchangeForm {
         super();
     }
 
-    //TODO: Add annotations here to validate the form
-
     @JsonView(View.DetailsOfPersonalGame.class)
     public List<PersonalGame> getPersonalGamesUser1() {
         return personalGamesUser1;

@@ -7,6 +7,7 @@ import es.eGames.forms.ExchangeForm;
 import es.eGames.services.ExchangeService;
 import es.eGames.views.View;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class ExchangeController {
     @Autowired
     private ExchangeService exchangeService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @JsonView(View.DetailsOfPersonalGame.class)
     public ResponseEntity createExchange(@RequestParam int personalGameId) {
 
