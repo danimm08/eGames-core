@@ -77,7 +77,7 @@ public class PersonalGameController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @JsonView(View.ListPersonalGame.class)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public ResponseEntity<List<PersonalGame>> listPersonalGamesByUser(@RequestParam(required = true) int userId) throws Exception {
 
         ResponseEntity responseEntity;

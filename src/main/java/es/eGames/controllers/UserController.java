@@ -104,4 +104,19 @@ public class UserController {
 
     }
 
+    @RequestMapping(value = "/principal", method = RequestMethod.GET)
+    public ResponseEntity principal() {
+        ResponseEntity responseEntity;
+
+        try {
+            User u = userService.getPrincipal();
+            responseEntity = ResponseEntity.ok().body(u);
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+
+        return responseEntity;
+
+    }
+
 }

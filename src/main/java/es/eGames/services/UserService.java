@@ -121,5 +121,11 @@ public class UserService {
         Double reputation = qualifications.stream().mapToDouble(Qualification::getMark).average().getAsDouble();
         return reputation;
     }
+
+
+    public User getPrincipal() {
+        User u = findByUsername(UserDetailsService.getPrincipal().getUsername());
+        return u;
+    }
 }
 
