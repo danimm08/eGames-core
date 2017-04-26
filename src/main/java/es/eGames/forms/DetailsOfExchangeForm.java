@@ -1,10 +1,7 @@
 package es.eGames.forms;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import es.eGames.model.Exchange;
-import es.eGames.model.PersonalGame;
-import es.eGames.model.Type;
-import es.eGames.model.User;
+import es.eGames.model.*;
 import es.eGames.views.View;
 
 import javax.persistence.EnumType;
@@ -14,6 +11,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,10 +27,12 @@ public class DetailsOfExchangeForm {
     private String wayExchange;
 
     private User user;
+    private User lastModifier;
     private Set<PersonalGame> personalGameUser1;
     private Set<PersonalGame> personalGameUser2;
+    private List<Note> notes;
 
-    public DetailsOfExchangeForm(Exchange exchange, Set<PersonalGame> personalGameUser1, Set<PersonalGame> personalGameUser2) {
+    public DetailsOfExchangeForm(Exchange exchange, Set<PersonalGame> personalGameUser1, Set<PersonalGame> personalGameUser2, List<Note> notes) {
         this.creationDate = exchange.getCreationDate();
         this.lastUpdateDate = exchange.getLastUpdateDate();
         this.status = exchange.getStatus();
@@ -40,9 +40,11 @@ public class DetailsOfExchangeForm {
         this.numberOfAttemps = exchange.getNumberOfAttemps();
         this.type = exchange.getType();
         this.wayExchange = exchange.getWayExchange();
+        this.lastModifier = exchange.getLastModifier();
         this.user = exchange.getUser();
         this.personalGameUser1 = personalGameUser1;
         this.personalGameUser2 = personalGameUser2;
+        this.notes = notes;
     }
 
     @NotNull
@@ -126,6 +128,16 @@ public class DetailsOfExchangeForm {
         this.user = user;
     }
 
+    @NotNull
+    @JsonView(View.DetailsOfPersonalGame.class)
+    public User getLastModifier() {
+        return lastModifier;
+    }
+
+    public void setLastModifier(User lastModifier) {
+        this.lastModifier = lastModifier;
+    }
+
     @JsonView(View.DetailsOfPersonalGame.class)
     public Set<PersonalGame> getPersonalGameUser1() {
         return personalGameUser1;
@@ -142,5 +154,14 @@ public class DetailsOfExchangeForm {
 
     public void setPersonalGameUser2(Set<PersonalGame> personalGameUser2) {
         this.personalGameUser2 = personalGameUser2;
+    }
+
+    @JsonView(View.DetailsOfPersonalGame.class)
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
     }
 }

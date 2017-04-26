@@ -240,8 +240,7 @@ public class ExchangeService {
         return res;
     }
 
-    //TODO: Modificar, hay que usar DetailsOfExchangeForm
-    public ExchangeForm getExchangeInfo(int exchangeId) {
+    public DetailsOfExchangeForm getExchangeInfo(int exchangeId) {
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         List<User> usersInExchange = new ArrayList<>(usersInExchange(exchangeId));
         Assert.isTrue(usersInExchange.contains(principal), "You are not authorized to perform this operation");
@@ -249,17 +248,12 @@ public class ExchangeService {
         Map<String, List<PersonalGame>> map = extractPersonalGamesByExchange(exchangeId);
         Exchange exchange = exchangeRepository.findOne(exchangeId);
 
-        ExchangeForm ef = new ExchangeForm();
-        ef.setPersonalGamesUser1(map.get("user1"));
-        ef.setPersonalGamesUser2(map.get("user2"));
-        ef.setWayExchange(exchange.getWayExchange());
-        ef.setType(exchange.getType());
+        Set<PersonalGame> personalGameUser1 = new HashSet(map.get("user1"));
+        Set<PersonalGame> personalGameUser2 = new HashSet(map.get("user2"));
         List<Note> notes = noteService.findNotesByExchange(exchangeId);
-        ef.setNotes(notes);
+        DetailsOfExchangeForm detailsOfExchangeForm = new DetailsOfExchangeForm(exchange, personalGameUser1, personalGameUser2,notes);
 
-        return ef;
-
-
+        return detailsOfExchangeForm;
     }
 
     public List<DetailsOfExchangeForm> getListOfMyExchanges() {
@@ -271,7 +265,8 @@ public class ExchangeService {
             Map<String, List<PersonalGame>> map = extractPersonalGamesByExchange(e.getId());
             Set<PersonalGame> personalGameUser1 = new HashSet(map.get("user1"));
             Set<PersonalGame> personalGameUser2 = new HashSet(map.get("user2"));
-            DetailsOfExchangeForm detailsOfExchangeForm = new DetailsOfExchangeForm(e, personalGameUser1, personalGameUser2);
+            List<Note> notes = noteService.findNotesByExchange(e.getId());
+            DetailsOfExchangeForm detailsOfExchangeForm = new DetailsOfExchangeForm(e, personalGameUser1, personalGameUser2, notes);
             myDetailsOfExchangesForm.add(detailsOfExchangeForm);
         }
         return myDetailsOfExchangesForm;
