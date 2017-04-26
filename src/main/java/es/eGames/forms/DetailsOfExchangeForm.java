@@ -32,7 +32,6 @@ public class DetailsOfExchangeForm {
     private Set<PersonalGame> personalGameUser1;
     private Set<PersonalGame> personalGameUser2;
 
-
     public DetailsOfExchangeForm(Exchange exchange, Set<PersonalGame> personalGameUser1, Set<PersonalGame> personalGameUser2) {
         this.creationDate = exchange.getCreationDate();
         this.lastUpdateDate = exchange.getLastUpdateDate();
@@ -118,6 +117,7 @@ public class DetailsOfExchangeForm {
 
     @NotNull
     @ManyToOne(optional = false)
+    @JsonView(View.DetailsOfPersonalGame.class)
     public User getUser() {
         return user;
     }

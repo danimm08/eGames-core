@@ -211,7 +211,9 @@ public class ExchangeService {
         Map<String, List<PersonalGame>> res = new HashMap<>();
         Exchange exchange = exchangeRepository.findOne(exchangeId);
         Assert.notNull(exchange);
-        User u1 = exchange.getUser();
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        Assert.isTrue(usersInExchange(exchangeId).contains(principal));
+        User u1 = principal;
         PersonalGame auxPersonalGame = personalGameService.findAllPersonalGameByExchange(exchangeId)
                 .stream().filter(personalGame -> personalGame.getExchange().getId() == exchangeId && personalGame.getUser().getId() != u1.getId()).findAny().get();
         User u2 = auxPersonalGame.getUser();
@@ -238,6 +240,7 @@ public class ExchangeService {
         return res;
     }
 
+    //TODO: Modificar, hay que usar DetailsOfExchangeForm
     public ExchangeForm getExchangeInfo(int exchangeId) {
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         List<User> usersInExchange = new ArrayList<>(usersInExchange(exchangeId));
