@@ -251,7 +251,7 @@ public class ExchangeService {
         Set<PersonalGame> personalGameUser1 = new HashSet(map.get("user1"));
         Set<PersonalGame> personalGameUser2 = new HashSet(map.get("user2"));
         List<Note> notes = noteService.findNotesByExchange(exchangeId);
-        DetailsOfExchangeForm detailsOfExchangeForm = new DetailsOfExchangeForm(exchange, personalGameUser1, personalGameUser2,notes);
+        DetailsOfExchangeForm detailsOfExchangeForm = new DetailsOfExchangeForm(exchange, personalGameUser1, personalGameUser2, notes);
 
         return detailsOfExchangeForm;
     }
@@ -268,6 +268,7 @@ public class ExchangeService {
             List<Note> notes = noteService.findNotesByExchange(e.getId());
             DetailsOfExchangeForm detailsOfExchangeForm = new DetailsOfExchangeForm(e, personalGameUser1, personalGameUser2, notes);
             myDetailsOfExchangesForm.add(detailsOfExchangeForm);
+            myDetailsOfExchangesForm.sort(Comparator.comparing(DetailsOfExchangeForm::getCreationDate).reversed());
         }
         return myDetailsOfExchangesForm;
     }

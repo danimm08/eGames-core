@@ -14,13 +14,13 @@ import java.util.List;
 @Repository
 public interface PersonalGameRepository extends JpaRepository<PersonalGame, Integer> {
 
-    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 order by pg.user.reputation desc")
+    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 and pg.exchange is null order by pg.user.reputation desc")
     List<PersonalGame> findByGameIdOrderByReputation(int gameId, int userId);
 
-    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 order by pg.type")
+    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 and pg.exchange is null order by pg.type")
     List<PersonalGame> findByGameIdOrderByType(int gameId, int userId);
 
-    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2")
+    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 and pg.exchange is null")
     List<PersonalGame> findByGameId(int gameId, int userId);
 
     @Query("select pg from PersonalGame pg where pg.user.id = ?1")
@@ -38,7 +38,7 @@ public interface PersonalGameRepository extends JpaRepository<PersonalGame, Inte
     @Query("select pg from PersonalGame pg where pg.user.userAccount.username not like ?1")
     List<PersonalGame> findAllExceptOfPrincipal(String username);
 
-    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 and pg.user = ANY (select fw from User u join u.followees fw where u.id = ?2 )")
+    @Query("select pg from PersonalGame pg where pg.game.id = ?1 and pg.user.id <> ?2 and pg.exchange is null and pg.user = ANY (select fw from User u join u.followees fw where u.id = ?2 )")
     List<PersonalGame> findPersonalGamesOfFolloweesByGameId(int gameId, int principalId);
 
     @Query("select pg from PersonalGame pg where pg.user = ANY (select fw from User u join u.followees fw where u.id = ?1 )")
