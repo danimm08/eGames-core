@@ -48,4 +48,19 @@ public class QualificationController {
         return responseEntity;
     }
 
+    @RequestMapping(value = "/checkIsAllowedToQualify", method = RequestMethod.GET)
+    public ResponseEntity isAllowedToQualify(@RequestParam(required = true) int exchangeId) throws Exception {
+
+        ResponseEntity responseEntity;
+        Boolean res;
+        try {
+            res = qualificationService.isAllowedToQualify(exchangeId);
+            responseEntity = ResponseEntity.ok().body(res);
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+
+        return responseEntity;
+    }
+
 }

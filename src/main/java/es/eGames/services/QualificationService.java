@@ -63,4 +63,13 @@ public class QualificationService {
     public List<Qualification> findByUserId(Integer userId) {
         return qualificationRepository.findByUserId(userId);
     }
+
+    public Boolean isAllowedToQualify(int exchangeId) {
+        Boolean res;
+        int num;
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        num = qualificationRepository.isAllowedToQualify(principal.getId(), exchangeId);
+        res = num > 0 ? false : true;
+        return res;
+    }
 }

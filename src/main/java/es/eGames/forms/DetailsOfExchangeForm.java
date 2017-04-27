@@ -18,6 +18,7 @@ import java.util.Set;
  * Created by daniel on 31/03/17.
  */
 public class DetailsOfExchangeForm {
+    private Integer id;
     private Date creationDate;
     private Date lastUpdateDate;
     private Boolean status;
@@ -33,6 +34,7 @@ public class DetailsOfExchangeForm {
     private List<Note> notes;
 
     public DetailsOfExchangeForm(Exchange exchange, Set<PersonalGame> personalGameUser1, Set<PersonalGame> personalGameUser2, List<Note> notes) {
+        this.id = exchange.getId();
         this.creationDate = exchange.getCreationDate();
         this.lastUpdateDate = exchange.getLastUpdateDate();
         this.status = exchange.getStatus();
@@ -45,6 +47,15 @@ public class DetailsOfExchangeForm {
         this.personalGameUser1 = personalGameUser1;
         this.personalGameUser2 = personalGameUser2;
         this.notes = notes;
+    }
+
+    @JsonView(View.DetailsOfPersonalGame.class)
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @NotNull

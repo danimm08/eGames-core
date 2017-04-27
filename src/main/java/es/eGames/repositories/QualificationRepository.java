@@ -17,4 +17,7 @@ public interface QualificationRepository extends JpaRepository<Qualification, In
 
     @Query("select q from Qualification q where q.user.id <> ?1 and q.exchange = ANY(select pg.exchange from PersonalGame pg where pg.user.id = ?1)")
     List<Qualification> findByUserId(Integer userId);
+
+    @Query("select count(q) from Qualification q where q.user.id = ?1 and q.exchange.id = ?2")
+    int isAllowedToQualify(int userId, int exchangeId);
 }
