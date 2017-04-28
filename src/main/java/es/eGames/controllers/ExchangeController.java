@@ -52,7 +52,7 @@ public class ExchangeController {
                 responseEntity = ResponseEntity.ok().body(exchangeService.save(exchangeForm));
             }
         } catch (Exception e) {
-            responseEntity = ResponseEntity.badRequest().body(e.getMessage());
+            responseEntity = ResponseEntity.badRequest().build();
         }
         return responseEntity;
     }
@@ -103,13 +103,11 @@ public class ExchangeController {
         try {
             if (bindingResult.hasErrors()) {
                 responseEntity = ResponseEntity.badRequest().body(HandleValidationErrors.mapErros(bindingResult, exchangeForm));
-
             } else {
                 responseEntity = ResponseEntity.ok().body(exchangeService.negotiate(exchangeForm, exchangeId));
             }
         } catch (Exception e) {
-            responseEntity = ResponseEntity.badRequest().body(e.getMessage());
-            e.printStackTrace();
+            responseEntity = ResponseEntity.badRequest().build();
         }
         return responseEntity;
     }
@@ -123,6 +121,36 @@ public class ExchangeController {
         try {
             List<DetailsOfExchangeForm> myExchanges = exchangeService.getListOfMyExchanges();
             responseEntity = ResponseEntity.ok().body(myExchanges);
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+        return responseEntity;
+    }
+
+    @RequestMapping(value = "/getExchangeFormInfo", method = RequestMethod.GET)
+    @JsonView(View.DetailsOfPersonalGame.class)
+    public ResponseEntity getExchangeFormInfo(@RequestParam int exchangeId) {
+
+        ResponseEntity responseEntity;
+
+        try {
+            ExchangeForm ef = exchangeService.getExchangeFormInfo(exchangeId);
+            responseEntity = ResponseEntity.ok().body(ef);
+        } catch (IllegalArgumentException oops) {
+            responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
+        }
+        return responseEntity;
+    }
+
+    @RequestMapping(value = "/createNegotiation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(View.DetailsOfPersonalGame.class)
+    public ResponseEntity createNegotiation(@RequestParam int exchangeId) {
+
+        ResponseEntity responseEntity;
+
+        try {
+            ExchangeForm ef = exchangeService.createNegotiation(exchangeId);
+            responseEntity = ResponseEntity.ok().body(ef);
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }

@@ -256,10 +256,28 @@ public class ExchangeService {
         return detailsOfExchangeForm;
     }
 
+    public ExchangeForm getExchangeFormInfo(int exchangeId) {
+        User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
+        List<User> usersInExchange = new ArrayList<>(usersInExchange(exchangeId));
+        Assert.isTrue(usersInExchange.contains(principal), "You are not authorized to perform this operation");
+
+        Map<String, List<PersonalGame>> map = extractPersonalGamesByExchange(exchangeId);
+        Exchange exchange = exchangeRepository.findOne(exchangeId);
+
+        ExchangeForm ef = new ExchangeForm();
+        ef.setPersonalGamesUser1(map.get("user1"));
+        ef.setPersonalGamesUser2(map.get("user2"));
+        ef.setWayExchange(exchange.getWayExchange());
+        ef.setType(exchange.getType());
+        List<Note> notes = new ArrayList<>();
+        ef.setNotes(notes);
+        return ef;
+    }
+
     public List<DetailsOfExchangeForm> getListOfMyExchanges() {
         User u = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         Assert.isTrue(u != null, "You must be logged in to use this feature");
-        List<Exchange> myExchanges = exchangeRepository.findByUserId(u.getId());
+        Set<Exchange> myExchanges = new HashSet<>(exchangeRepository.findByUserId(u.getId()));
         List<DetailsOfExchangeForm> myDetailsOfExchangesForm = new ArrayList<>();
         for (Exchange e : myExchanges) {
             Map<String, List<PersonalGame>> map = extractPersonalGamesByExchange(e.getId());
@@ -268,12 +286,33 @@ public class ExchangeService {
             List<Note> notes = noteService.findNotesByExchange(e.getId());
             DetailsOfExchangeForm detailsOfExchangeForm = new DetailsOfExchangeForm(e, personalGameUser1, personalGameUser2, notes);
             myDetailsOfExchangesForm.add(detailsOfExchangeForm);
-            myDetailsOfExchangesForm.sort(Comparator.comparing(DetailsOfExchangeForm::getCreationDate).reversed());
         }
+        myDetailsOfExchangesForm.sort(Comparator.comparing(DetailsOfExchangeForm::getCreationDate).reversed());
         return myDetailsOfExchangesForm;
     }
 
     public Exchange findById(Integer exchangeId) {
         return exchangeRepository.findOne(exchangeId);
+    }
+
+    public ExchangeForm createNegotiation(int exchangeId) {
+        ExchangeForm ef = new ExchangeForm();
+        String username = UserDetailsService.getPrincipal().getUsername();
+        Assert.isTrue(username != null, "You must be logged in.");
+        User u1 = userService.findByUsername(username);
+        Set<User> users = usersInExchange(exchangeId);
+        User u2 = users.stream().filter(user -> !user.equals(u1)).findFirst().get();
+        Assert.isTrue(u1 != u2, "It's not allowed make exchanges with yourself.");
+        List<PersonalGame> personalGamesUser1 = personalGameService.findAllPersonalGameByUserAndExchange(exchangeId, u1.getId());
+        List<PersonalGame> personalGamesUser2 = personalGameService.findAllPersonalGameByUserAndExchange(exchangeId, u2.getId());
+        personalGamesUser1.addAll(personalGameService.findAvailablePersonalGameByUser(u1.getId()));
+        personalGamesUser2.addAll(personalGameService.findAvailablePersonalGameByUser(u2.getId()));
+        ef.setPersonalGamesUser1(personalGamesUser1);
+        ef.setPersonalGamesUser2(personalGamesUser2);
+        ef.setNotes(new ArrayList<Note>());
+        ef.setType(Type.Fijo);
+        ef.setWayExchange("");
+
+        return ef;
     }
 }
