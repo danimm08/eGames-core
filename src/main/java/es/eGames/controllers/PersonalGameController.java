@@ -99,7 +99,7 @@ public class PersonalGameController {
 
         try {
             imageService.savePersonalGamePicture(image, personalGameId);
-            responseEntity = ResponseEntity.ok().body("The image has been uploaded successfully");
+            responseEntity = ResponseEntity.ok().build();
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());
         }

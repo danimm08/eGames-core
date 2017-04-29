@@ -104,7 +104,13 @@ public class ImageService {
 
     public MediaType getContentType(String filename) {
         MediaType mediaType;
-        String extension = filename.split("\\.")[1];
+        String[] auxExtension = filename.split("\\.");
+        String extension;
+        if (auxExtension.length > 1) {
+            extension = filename.split("\\.")[1];
+        } else {
+            extension = "default";
+        }
 
         switch (extension) {
             case "jpg":
@@ -117,7 +123,7 @@ public class ImageService {
                 mediaType = MediaType.IMAGE_PNG;
                 break;
             default:
-                mediaType = null;
+                mediaType = MediaType.IMAGE_PNG;
                 break;
         }
         return mediaType;
@@ -160,7 +166,7 @@ public class ImageService {
             Files.copy(image.getInputStream(), rootLocation.resolve(filename));
 
             Image pgImage = new Image();
-            pgImage.setPathUrl(pathImageToSave);
+            pgImage.setPathUrl(pathImageToSave.replace(rootPath + "/", ""));
             pgImage.setPersonalGame(personalGame);
             imageRepository.save(pgImage);
 
