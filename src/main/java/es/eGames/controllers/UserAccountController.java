@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by daniel on 30/03/17.
@@ -33,8 +35,10 @@ public class UserAccountController {
                 responseEntity = ResponseEntity.badRequest().body(HandleValidationErrors.mapErros(bindingResult, userUserAccountForm));
 
             } else {
-                userAccountService.editUserAccount(userUserAccountForm, request);
-                responseEntity = ResponseEntity.ok().build();
+                Boolean auxRes = userAccountService.editUserAccount(userUserAccountForm, request);
+                Map<String,Boolean> res = new HashMap();
+                res.put("result", auxRes);
+                responseEntity = ResponseEntity.ok().body(res);
             }
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());

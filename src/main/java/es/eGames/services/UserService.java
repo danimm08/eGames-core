@@ -81,13 +81,25 @@ public class UserService {
     public void editProfile(UserProfileForm userProfileForm) {
         User principal = userRepository.findByUsername(UserDetailsService.getPrincipal().getUsername());
 
-        if (userProfileForm.getName() != null && !userProfileForm.getName().isEmpty())
+        if (userProfileForm.getName() != null && !userProfileForm.getName().isEmpty() && !userProfileForm.getName().equals(principal.getName()))
             principal.setName(userProfileForm.getName());
 
-        if (userProfileForm.getSurname() != null && !userProfileForm.getSurname().isEmpty())
+        if (userProfileForm.getSurname() != null && !userProfileForm.getSurname().isEmpty() && !userProfileForm.getSurname().equals(principal.getSurname()))
             principal.setSurname(userProfileForm.getSurname());
 
-        if (userProfileForm.getAddress() != null && !userProfileForm.getAddress().equals(principal.getAddress()))
+        if (userProfileForm.getAddress() != null && !userProfileForm.getAddress().getCity().isEmpty() && !userProfileForm.getAddress().getCity().equals(principal.getAddress().getCity()))
+            principal.setAddress(userProfileForm.getAddress());
+
+        if (userProfileForm.getAddress() != null && !userProfileForm.getAddress().getStreet().isEmpty() && !userProfileForm.getAddress().getStreet().equals(principal.getAddress().getStreet()))
+            principal.setAddress(userProfileForm.getAddress());
+
+        if (userProfileForm.getAddress() != null && !userProfileForm.getAddress().getState().isEmpty() && !userProfileForm.getAddress().getState().equals(principal.getAddress().getState()))
+            principal.setAddress(userProfileForm.getAddress());
+
+        if (userProfileForm.getAddress() != null && !userProfileForm.getAddress().getCountry().isEmpty() && !userProfileForm.getAddress().getCountry().equals(principal.getAddress().getCountry()))
+            principal.setAddress(userProfileForm.getAddress());
+
+        if (userProfileForm.getAddress() != null && !userProfileForm.getAddress().getZip().isEmpty() && !userProfileForm.getAddress().getZip().equals(principal.getAddress().getZip()))
             principal.setAddress(userProfileForm.getAddress());
 
         update(principal);

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
@@ -57,28 +58,34 @@ public class UserAccountService {
     }
 
 
-    public void editUserAccount(UserUserAccountForm userUserAccountForm, HttpServletRequest request) {
+    public Boolean editUserAccount(UserUserAccountForm userUserAccountForm, HttpServletRequest request) {
+        Boolean res = false;
         StandardPasswordEncoder passwordEncoder = new StandardPasswordEncoder();
 
         UserAccount principalUserAccount = userAccountRepository.findByUsername(UserDetailsService.getPrincipal().getUsername());
 
-        if (!passwordEncoder.matches(userUserAccountForm.getOldPassword(), principalUserAccount.getPassword()))
-            throw new IllegalArgumentException("La contraseña actual no coincide con la actual, no se pueden realizar los cambios");
+        if (!userUserAccountForm.getUsername().isEmpty() || !userUserAccountForm.getEmail().isEmpty() || !userUserAccountForm.getPassword().isEmpty()) {
+            Assert.isTrue(!userUserAccountForm.getOldPassword().isEmpty());
+            if (!passwordEncoder.matches(userUserAccountForm.getOldPassword(), principalUserAccount.getPassword()))
+                throw new IllegalArgumentException("La contraseña actual no coincide con la actual, no se pueden realizar los cambios");
+            res = true;
+            logout(request);
 
-        logout(request);
 
-        if (!userUserAccountForm.getUsername().isEmpty())
-            principalUserAccount.setUsername(userUserAccountForm.getUsername());
+            if (userUserAccountForm.getUsername() != null && !userUserAccountForm.getUsername().isEmpty() && !userUserAccountForm.getUsername().equals(principalUserAccount.getUsername()))
+                principalUserAccount.setUsername(userUserAccountForm.getUsername());
 
-        if (!userUserAccountForm.getPassword().isEmpty()) {
-            String encodedPassword = passwordEncoder.encode(userUserAccountForm.getPassword());
-            principalUserAccount.setPassword(encodedPassword);
+            if (userUserAccountForm.getPassword() != null && !userUserAccountForm.getPassword().isEmpty() && !userUserAccountForm.getPassword().equals(principalUserAccount.getPassword())) {
+                String encodedPassword = passwordEncoder.encode(userUserAccountForm.getPassword());
+                principalUserAccount.setPassword(encodedPassword);
+            }
+
+            if (userUserAccountForm.getEmail() != null && !userUserAccountForm.getEmail().isEmpty() && !userUserAccountForm.getEmail().equals(principalUserAccount.getEmail()))
+                principalUserAccount.setEmail(userUserAccountForm.getEmail());
+
+            userAccountRepository.save(principalUserAccount);
         }
-
-        if (!userUserAccountForm.getEmail().isEmpty())
-            principalUserAccount.setEmail(userUserAccountForm.getEmail());
-
-        userAccountRepository.save(principalUserAccount);
+        return res;
     }
 
     public void logout(HttpServletRequest request) {

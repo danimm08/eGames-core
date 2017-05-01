@@ -3,6 +3,7 @@ package es.eGames.controllers;
 import com.fasterxml.jackson.annotation.JsonView;
 import es.eGames.forms.MessageForm;
 import es.eGames.model.Message;
+import es.eGames.model.User;
 import es.eGames.services.MessageService;
 import es.eGames.views.View;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class MessageController {
         ResponseEntity responseEntity;
 
         try {
-            Set<String> chats = messageService.getChats();
+            Set<User> chats = messageService.getChats();
             responseEntity = ResponseEntity.ok().body(chats);
         } catch (IllegalArgumentException oops) {
             responseEntity = ResponseEntity.badRequest().body(oops.getMessage());

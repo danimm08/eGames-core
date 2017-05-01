@@ -28,16 +28,16 @@ public class MessageService {
         super();
     }
 
-    public Set<String> getChats() {
-        Set<String> chats = new HashSet<>();
+    public Set<User> getChats() {
+        Set<User> chats = new HashSet<>();
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         List<Message> messages = messageRepository.findChats(principal);
         for (Message m : messages) {
             if (!m.getSender().equals(principal)) {
-                chats.add(m.getSender().getUserAccount().getUsername());
+                chats.add(m.getSender());
             }
             if (!m.getRecipient().equals(principal)) {
-                chats.add(m.getRecipient().getUserAccount().getUsername());
+                chats.add(m.getRecipient());
             }
         }
         return chats;

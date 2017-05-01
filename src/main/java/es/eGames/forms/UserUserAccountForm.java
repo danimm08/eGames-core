@@ -1,7 +1,5 @@
 package es.eGames.forms;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 /**
  * Created by daniel on 30/03/17.
  */
@@ -36,7 +34,6 @@ public class UserUserAccountForm {
         this.email = email;
     }
 
-    @NotBlank
     public String getOldPassword() {
         return oldPassword;
     }
