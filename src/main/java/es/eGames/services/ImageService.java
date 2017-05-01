@@ -61,7 +61,7 @@ public class ImageService {
             Files.copy(image.getInputStream(), rootLocation.resolve(image.getOriginalFilename()));
 
             User principal = userService.findByUsername(username);
-            principal.setProfilePicture(fullPath + "/" + image.getOriginalFilename());
+            principal.setProfilePicture(profilePicturePath.replaceFirst("/","") + "/" + image.getOriginalFilename());
             userService.update(principal);
         } catch (IOException e) {
             throw new Exception("Failed to saveProfilePicture file " + image.getOriginalFilename(), e);
