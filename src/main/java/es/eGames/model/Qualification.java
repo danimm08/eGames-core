@@ -36,7 +36,7 @@ public class Qualification extends BaseEntity {
         this.text = text;
     }
 
-    @Range(min=0, max=10)
+    @Range(min=0, max=5)
     public Double getMark() {
         return mark;
     }
