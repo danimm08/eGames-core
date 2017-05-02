@@ -147,7 +147,10 @@ public class PersonalGameService {
     public Collection<PersonalGame> listPersonalGamesByUser(int userId) {
         Assert.notNull(userId);
         List<PersonalGame> personalGames;
-        personalGames = personalGameRepository.findByUserId(userId);
+        List<PersonalGame> personalGames1;
+        personalGames = personalGameRepository.findAvailablePersonalGameByUser(userId);
+        personalGames1 = personalGameRepository.findSemiAvailablePersonalGameByUser(userId);
+        personalGames.addAll(personalGames1);
         Assert.notNull(personalGames);
 
         return personalGames;
