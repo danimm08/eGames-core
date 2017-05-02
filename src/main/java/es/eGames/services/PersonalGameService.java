@@ -135,11 +135,6 @@ public class PersonalGameService {
         Assert.notNull(personalGameId);
         PersonalGame personalGame;
         personalGame = personalGameRepository.findOne(new Integer(personalGameId));
-        personalGame.getGame().setGenres(new HashSet<>());
-        personalGame.getGame().setGameModes(new HashSet<>());
-        personalGame.getUser().setFollowees(null);
-        personalGame.getUser().setFollowers(null);
-
         return personalGame;
     }
 
@@ -147,7 +142,10 @@ public class PersonalGameService {
     public Collection<PersonalGame> listPersonalGamesByUser(int userId) {
         Assert.notNull(userId);
         List<PersonalGame> personalGames;
-        personalGames = personalGameRepository.findByUserId(userId);
+        List<PersonalGame> personalGames1;
+        personalGames = personalGameRepository.findAvailablePersonalGameByUser(userId);
+        personalGames1 = personalGameRepository.findSemiAvailablePersonalGameByUser(userId);
+        personalGames.addAll(personalGames1);
         Assert.notNull(personalGames);
 
         return personalGames;

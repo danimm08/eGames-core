@@ -53,7 +53,7 @@ public class ExchangeService {
     }
 
     public Exchange save(ExchangeForm ef) {
-
+        //TODO: Al hacer un intercambio se pierden los followers y followees
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
 
         Date now = new Date();
@@ -186,7 +186,7 @@ public class ExchangeService {
         ef.getPersonalGamesUser1().forEach(personalGame -> {
             PersonalGame pg = personalGameService.findById(Integer.toString(personalGame.getId()));
             Assert.isTrue(pg.getExchange() == null, "This personal game is not available to exchange it");
-            Assert.isTrue(pg.getUser().equals(exchange.getUser()), "This personal game does not belong to you");
+            Assert.isTrue(pg.getUser().equals(principal), "This personal game does not belong to you");
             pg.setExchange(res);
             personalGameService.save(pg);
         });

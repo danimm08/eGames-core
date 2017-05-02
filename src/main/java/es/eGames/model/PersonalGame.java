@@ -75,6 +75,7 @@ public class PersonalGame extends BaseEntity {
     }
 
     @ManyToOne
+    @JsonView(View.ListPersonalGame.class)
     public Exchange getExchange() {
         return exchange;
     }

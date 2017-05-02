@@ -32,6 +32,7 @@ public class CustomFollowersFolloweesSerializer extends JsonSerializer<List<User
             jgen.writeNumberField("reputation", pg.getReputation());
             jgen.writeObjectField("address", pg.getAddress());
             jgen.writeNumberField("nExchanges", pg.getnExchanges());
+            jgen.writeStringField("profilePicture", pg.getProfilePicture());
             jgen.writeObjectField("userAccount", pg.getUserAccount());
             jgen.writeEndObject();
         }

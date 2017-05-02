@@ -68,7 +68,6 @@ public class User extends BaseEntity {
         this.reputation = reputation;
     }
 
-
     public String getProfilePicture() {
         return profilePicture;
     }

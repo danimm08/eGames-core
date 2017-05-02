@@ -122,6 +122,7 @@ public class UserService {
             principal.getFollowees().remove(toFollow);
             toFollow.getFollowers().remove(principal);
         }
+        String test = "test";
     }
 
     public User save(User u) {
