@@ -7,12 +7,14 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
  */
 public class PasswordEncoder {
 
-    private static final String password = "password10";
+    private static final String[] passwords = {"alvrodlag", "bonbarull", "laucazval", "marcorgue", "sanespmer", "letmonguz", "carramcor", "josbergri", "estadoven", "rafnuñara"};
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        StandardPasswordEncoder passwordEncoder = new StandardPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(password);
-        System.out.println(encodedPassword);
+        for (String password : passwords) {
+            StandardPasswordEncoder passwordEncoder = new StandardPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(password);
+            System.out.println(encodedPassword);
+        }
     }
 }
