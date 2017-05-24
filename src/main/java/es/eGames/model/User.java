@@ -58,7 +58,7 @@ public class User extends BaseEntity {
         this.surname = surname;
     }
 
-    @Range(min = 0, max = 10)
+    @Range(min = 0, max = 10) //TODO: Modificar por 5
     @JsonView(View.DetailsOfPersonalGame.class)
     public Double getReputation() {
         return reputation;
@@ -88,7 +88,7 @@ public class User extends BaseEntity {
     }
 
     @NotNull
-    @Range(min=0)
+    @Range(min=0) //TODO: cambiar por min
     @JsonView(View.DetailsOfPersonalGame.class)
     public Integer getnExchanges() {
         return nExchanges;
