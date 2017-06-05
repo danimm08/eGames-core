@@ -85,17 +85,16 @@ public class GameService {
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
         List<PersonalGame> myPersonalGames = personalGameService.findByUserId(principal.getId());
         Random random = new Random();
-        List<Game> selectOfPersonalGames = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            Integer index = random.nextInt(myPersonalGames.size());
-            selectOfPersonalGames.add(myPersonalGames.get(index).getGame());
-        }
+        Game selectedPersonalGame;
+        Integer index = random.nextInt(myPersonalGames.size());
+        selectedPersonalGame = myPersonalGames.get(index).getGame();
+
 
         List<Integer> listOfGameIDs = new ArrayList<>();
-        for (Game game : selectOfPersonalGames) {
-            ResponseEntity<List> request = restTemplate.exchange(env.getProperty("es.eGames.recommenderSystem.url") + game.getId(), HttpMethod.GET, httpEntity, List.class);
-            listOfGameIDs.addAll(request.getBody());
-        }
+
+        ResponseEntity<List> request = restTemplate.exchange(env.getProperty("es.eGames.recommenderSystem.url") + selectedPersonalGame.getId(), HttpMethod.GET, httpEntity, List.class);
+        listOfGameIDs.addAll(request.getBody());
+
 
         List<GameDetailsForm> res = new ArrayList<>();
         for (Integer id : listOfGameIDs) {
