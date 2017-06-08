@@ -53,7 +53,6 @@ public class ExchangeService {
     }
 
     public Exchange save(ExchangeForm ef) {
-        //TODO: Al hacer un intercambio se pierden los followers y followees
         User principal = userService.findByUsername(UserDetailsService.getPrincipal().getUsername());
 
         Date now = new Date();
