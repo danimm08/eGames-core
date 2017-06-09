@@ -6,12 +6,10 @@ apt-get install -y default-jdk
 apt-get install -y python python-pip
 apt-get install -y python-mysqldb
 
-mysql -uroot -proot < eGames-core/src/main/resources/configDatabase.sql
-mysql -uplayer -pplayer eGames < eGames-core/src/main/resources/initialize.sql
+mysql -uroot -proot < configDatabase.sql
+mysql -uplayer -pplayer eGames < initialize.sql
 
-mkdir /TFGDMM
-cp -r /TFGDMM/eGames-core/src/main/resources/images /TFGDMM/images
+cp -r images /TFGDMM/images
 
-pip install -r eGames-recommender/requirements.txt
-
-/eGames-core/./mvnw spring-boot:run
+cd /TFGDMM && pip install -r eGames-recommender/requirements.txt
+cd eGames-core && ./mvnw spring-boot:run
