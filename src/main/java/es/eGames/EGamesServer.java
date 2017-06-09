@@ -10,7 +10,7 @@ public class EGamesServer {
 
     public static void main(String[] args) throws IOException {
         Runtime run = Runtime.getRuntime();
-        run.exec("/usr/bin/python2.7 /home/daniel/Proyectos/eGames-recommender/manage.py runserver 8000");
+        run.exec("/usr/bin/python2.7 /TFGDMM/eGames-recommender/manage.py runserver 8000");
         SpringApplication.run(EGamesServer.class, args);
     }
 }
